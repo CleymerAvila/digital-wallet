@@ -1,5 +1,4 @@
 import type { CapacitorConfig } from '@capacitor/cli';
-import { SplashScreen } from '@capacitor/splash-screen'
 
 const config: CapacitorConfig = {
   appId: 'io.ionic.starter',
@@ -9,7 +8,7 @@ const config: CapacitorConfig = {
     SplashScreen: {
       launchShowDuration: 2000,
       launchAutoHide: false,
-      backgroundColor: '#ffffff',
+      backgroundColor: '#0AAFE6',
       androidSplashResourceName: 'splash',
       showSpinner: false,
       splashFullScreen: true,
