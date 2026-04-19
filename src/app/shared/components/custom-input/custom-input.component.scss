@@ -1,0 +1,23 @@
+
+ion-item {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+
+ion-input.md {
+  --margin-top: 20px;
+  --border-radius: 15px;
+  --background: #f2efef;
+  --highlight-color-focused: blue;
+  font-weight: 700;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.error {
+  margin-left: 25px;
+  font-weight: 700;
+  color: red;;
+}

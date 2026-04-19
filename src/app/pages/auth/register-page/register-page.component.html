@@ -1,0 +1,122 @@
+<ion-content scrollY="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-title class="ion-text-start">
+        <h1 class="title">
+          Registrate
+        </h1>
+      </ion-title>
+      <ion-label class="ion-text-start subtitle">
+        Crea tu cuenta
+      </ion-label>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-label position="start">Nombre</ion-label>
+              <app-custom-input
+                formControlName="name"
+                type="text"
+                placeholder="Andrea Carolina"
+                [errorMessages]="{
+                  required: 'El Nombre es obligatorio'
+                }"
+              >
+              </app-custom-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label position="start" >Apellido</ion-label>
+              <app-custom-input
+                formControlName="lastName"
+                type="text"
+                placeholder="Rodrigez"
+                [errorMessages]="{
+                  required: 'El apellido es obligatorio'
+                }"
+              >
+              </app-custom-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label position="start" >Tipo Doc</ion-label>
+                  <ion-select formControlName="docType" fill="outline" aria-label="Doc Type" interface="popover" placeholder="ID">
+                    <ion-select-option value="CC">CC</ion-select-option>
+                    <ion-select-option value="CE">CE</ion-select-option>
+                    <ion-select-option value="Passport">Passport</ion-select-option>
+                  </ion-select>
+            </ion-col>
+            <ion-col>
+              <ion-label position="start" >Numero Doc</ion-label>
+              <app-custom-input
+                formControlName="docNumber"
+                type="number"
+                placeholder="1228042923"
+                [errorMessages]="{
+                  required: 'El numero de identifación es obligatorio'
+                }"
+              >
+              </app-custom-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label position="start" >Pais</ion-label>
+              <app-custom-input
+                formControlName="country"
+                type="text"
+                placeholder="Barcelona"
+                [errorMessages]="{
+                  required: 'El pais es obligatorio'
+                }"
+              >
+              </app-custom-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label position="start">Correo</ion-label>
+              <app-custom-input
+                formControlName="email"
+                type="email"
+                placeholder="andrea@gmail.com"
+                [errorMessages]="{
+                  required: 'El numero de identifación es obligatorio'
+                }"
+              >
+              </app-custom-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label position="start" >Contraseña</ion-label>
+              <app-custom-input
+                formControlName="password"
+                type="password"
+                placeholder="**********"
+                [errorMessages]="{
+                  required: 'La contraseña es obligatoria'
+                }"
+              >
+              </app-custom-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-button type="submit" [disabled]="registerForm.invalid">Registrarse</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+      <ion-row class="ion-text-center">
+        <ion-col size="12">
+          <ion-label>Ya tienes cuenta? <a routerLink="/auth/login">Inicia Sessión</a></ion-label>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

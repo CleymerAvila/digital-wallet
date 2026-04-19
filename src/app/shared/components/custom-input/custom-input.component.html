@@ -1,0 +1,21 @@
+<ion-item>
+  <!-- <ion-label position="stacked"> {{ label }}</ion-label> -->
+
+  <ion-input
+    fill="outline"
+    [value]="value || ''"
+    [type]="type"
+    [placeholder]="placeholder"
+    [disabled]="isDisabled"
+    (ionInput)="handleInput($event)"
+    (ionBlur)="handleBlur()"
+  >
+  </ion-input>
+</ion-item>
+<!-- errores -->
+<div class="error" *ngIf="control?.touched && control?.invalid">
+  <small *ngFor="let error of control?.errors | keyvalue">
+    {{ errorMessages[error.key] || error.key }}
+  </small>
+</div>
+

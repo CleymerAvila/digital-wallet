@@ -1,0 +1,100 @@
+
+<ion-content scrollY="false" class="ion-no-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-title class="ion-text-start">
+        <h1 class="title">
+          Bienvenido a
+          DigitalWallet
+        </h1>
+      </ion-title>
+      <ion-label class="ion-text-start subtitle">
+        Inicia Sesión en tu Cuenta
+      </ion-label>
+    </ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-label position="start" >Correo</ion-label>
+              <app-custom-input
+                formControlName="email"
+                label="Email"
+                type="email"
+                placeholder="youremail@gmail.com"
+                [errorMessages]="{
+                  required: 'El Correo es obligatorio',
+                  email: 'El formato del correo es incorrecto'
+                }"
+              >
+              </app-custom-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label position="start" >Contraseña </ion-label>
+              <app-custom-input
+                formControlName="password"
+                label="password"
+                type="password"
+                placeholder="*******"
+                [errorMessages]="{
+                  required: 'La Contraseña es obligatoria',
+                  minlength: 'La contraseña debe tener minimo 6 caracteres',
+                  maxlength: 'La contraseña debe tener maximo 12 caracteres'
+                }"
+              >
+              </app-custom-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-button
+                type="submit"
+                [disabled]="loginForm.invalid"
+              >
+                Iniciar Sesión
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+      <ion-row>
+          <div class="divider-container">
+            <div class="line"></div>
+            <ion-label class="divider-text">O continua con</ion-label>
+            <div class="line"></div>
+          </div>
+        <ion-col>
+          <ion-button
+          (click)="signInWithGoogle()"
+          type="button"
+          class="auth-button"
+          >
+          <ion-icon name="logo-google" slot="start"></ion-icon>
+            Google
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-text-center">
+        <ion-col size="12">
+          <ion-label >
+            No tienes cuenta?
+            <a routerLink="/auth/register">registrate</a>
+          </ion-label>
+        </ion-col>
+      </ion-row>
+      <ion-row class="ion-text-center">
+        <ion-col>
+          <ion-button
+          type="button"
+          >
+          <ion-icon name="finger-print-outline" slot="start"></ion-icon>
+            Inicio Biometrico
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
