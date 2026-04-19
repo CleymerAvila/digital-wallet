@@ -23,10 +23,12 @@ import {
 export class CustomInputComponent   implements OnInit,  ControlValueAccessor {
 
   @Input() label: string = '';
+  @Input() labelPlacement = '';
+  @Input() fill = 'outline';
   @Input() type: string = 'text';
+  @Input() icon: string = '';
   @Input() placeholder: string = '';
   @Input() errorMessages: Record<string, string> = {};
-
 
   value: any = '';
   isDisabled = false;

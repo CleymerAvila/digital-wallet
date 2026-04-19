@@ -1,15 +1,17 @@
 <ion-item>
-  <!-- <ion-label position="stacked"> {{ label }}</ion-label> -->
 
   <ion-input
-    fill="outline"
+    [fill]="fill"
     [value]="value || ''"
     [type]="type"
+    [label]="label || ''"
+    [labelPlacement]="labelPlacement || ''"
     [placeholder]="placeholder"
     [disabled]="isDisabled"
     (ionInput)="handleInput($event)"
     (ionBlur)="handleBlur()"
   >
+  <ion-icon slot="start" [name]="icon"></ion-icon>
   </ion-input>
 </ion-item>
 <!-- errores -->

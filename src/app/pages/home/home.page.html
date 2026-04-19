@@ -1,23 +1,56 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+    <ion-icon  slot="end" name="notifications-outline" size="large" ></ion-icon>
+    <ion-avatar  slot="end" (click)="openProfile()">
+      <img alt="Silhouette of a person's head" src="https://pbs.twimg.com/profile_images/2044188962877485056/bzto2TpW_400x400.jpg" />
+  </ion-avatar>
   </ion-toolbar>
 </ion-header>
+<ion-content [fullscreen]="true" class="wallet-content">
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <ion-button (click)="logout()">
-      Logout
-    </ion-button>
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div class="wallet-header">
+    <div class="header-left">
+      <h1>Hola cleymer!</h1>
+      <p>Comenzemos a ahorrar tu dinero.</p>
+    </div>
   </div>
+
+  <div class="card-section">
+    <div class="empty-card">
+      <ion-icon name="card-outline"></ion-icon>
+      <p>No hay tarjetas disponibles.</p>
+      <ion-button shape="round" fill="solid" color="medium" size="small">
+        + agregar tarjeta
+      </ion-button>
+    </div>
+  </div>
+
+  <div class="quick-actions">
+    <app-quick-actions
+      label="Cambiar Tarjeta"
+      iconName="layers-outline"
+      color="teal"
+    />
+    <app-quick-actions
+      label="Paga Ahora"
+      iconName="card-outline"
+      color="green"
+    />
+    <app-quick-actions
+      label="Agregar Tarjeta"
+      iconName="add"
+      color="darkblue"
+    />
+  </div>
+
+  <div class="history-section">
+    <div class="history-header">
+      <h2>Card History</h2>
+      <a class="view-all">View All</a>
+    </div>
+    <div class="empty-history">
+      <p>No transactions with this selected card.</p>
+    </div>
+  </div>
+
 </ion-content>

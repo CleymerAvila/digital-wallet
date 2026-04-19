@@ -4,11 +4,12 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomInputComponent } from './components/custom-input/custom-input.component';
+import { QuickActionsComponent } from './components/quick-actions/quick-actions.component';
 
 
 
 @NgModule({
-  declarations: [CustomInputComponent],
+  declarations: [CustomInputComponent, QuickActionsComponent],
   imports: [
     CommonModule,
     IonicModule,
@@ -21,7 +22,8 @@ import { CustomInputComponent } from './components/custom-input/custom-input.com
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    CustomInputComponent
+    CustomInputComponent,
+    QuickActionsComponent
   ]
 })
 export class SharedModule { }

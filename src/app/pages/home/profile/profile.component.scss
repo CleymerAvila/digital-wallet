@@ -1,0 +1,28 @@
+ion-toggle {
+  margin: 0 auto;
+  padding: 20px;
+  width: 85%;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 20px;
+  box-shadow: rgba(0, 0, 0, 0.3);
+  --border-radius: 20px;
+  --handle-background: white;
+  --handle-background-checked: green;
+  --handle-width: 20px
+}
+
+.modal-header {
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: flex-start;
+}
+
+.profile-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
