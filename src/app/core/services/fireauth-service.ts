@@ -33,14 +33,23 @@ export class FireauthService {
     })
   }
 
-  async loginWithGoogle(): Promise<UserCredential>{
-    if(this.platform.is('capacitor')){
-      const result = await GoogleSignIn.signIn();
-      const credential = GoogleAuthProvider.credential(result.idToken);
-      return signInWithCredential(this.auth, credential);
-    } else {
-      const provider = new GoogleAuthProvider();
-      return signInWithPopup(this.auth, provider);
+  async loginWithGoogle(): Promise<void>{
+    try {
+
+      if(this.platform.is('capacitor')){
+        const result = await GoogleSignIn.signIn();
+        console.log('Google result: ', result)
+        const credential = GoogleAuthProvider.credential(result.idToken);
+        await signInWithCredential(this.auth, credential);
+      } else {
+        const provider = new GoogleAuthProvider();
+        await signInWithPopup(this.auth, provider);
+      }
+    } catch (error: any) {
+      // Muestra el error completo, no solo el mensaje
+      console.error('Google Sign-In error completo:', JSON.stringify(error));
+      console.error('Código:', error.code);
+      console.error('Mensaje:', error.message);
     }
   }
 
