@@ -13,6 +13,8 @@ import { ProfileComponent } from './profile/profile.component';
 })
 export class HomePage {
 
+  currentUser$ = this.authService.currentUser$;
+
   constructor(
     private authService: FireauthService,
     private router: Router,

@@ -30,7 +30,7 @@ export class CustomInputComponent   implements OnInit,  ControlValueAccessor {
   @Input() placeholder: string = '';
   @Input() errorMessages: Record<string, string> = {};
 
-  value: any = '';
+  @Input() value: any = '';
   isDisabled = false;
   control!: NgControl | null;
   constructor(private injector: Injector) {

@@ -10,8 +10,10 @@
 
   <div class="wallet-header">
     <div class="header-left">
-      <h1>Hola cleymer!</h1>
-      <p>Comenzemos a ahorrar tu dinero.</p>
+      @if((currentUser$ | async); as user){
+        <h1> Hola {{ user.name }}</h1>
+        <p>Comenzemos a ahorrar tu dinero.</p>
+      }
     </div>
   </div>
 

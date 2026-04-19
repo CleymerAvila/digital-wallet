@@ -3,8 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserCredential } from 'firebase/auth';
 import { FireauthService } from 'src/app/core/services/fireauth-service';
-import { FirestoreService } from 'src/app/core/services/firestore-service';
 import { ToastService } from 'src/app/core/services/toast-service';
+import { UserService } from 'src/app/core/services/user-service';
 @Component({
   selector: 'app-register-page',
   templateUrl: './register-page.component.html',
@@ -23,7 +23,7 @@ export class RegisterPageComponent implements OnInit {
   errorMessage: string | null = null;
 
   constructor(
-    private firestore: FirestoreService,
+    private userService: UserService,
     private toast: ToastService,
     private authService: FireauthService,
     private router: Router
@@ -58,30 +58,28 @@ export class RegisterPageComponent implements OnInit {
   }
 
   async onSubmit() {
-    await this.register(this.registerForm.value);
+    await this.register(this.registerForm);
   }
 
   async register(form: any) {
 
-    this.authService.registerWithEmail(form.email, form.password)
+    const email = form.value.email;
+    const password = form.value.password;
+    form.removeControl('password')
+
+    const formWithoutPassword = form.value;
+
+    this.authService.registerWithEmail(email, password)
     .subscribe({
       next: (userCredential: UserCredential) => {
         const user = userCredential.user;
 
-       this.firestore.set('users', user.uid, {
-        uid: user.uid,
-        name: form.name,
-        lastName: form.lastName,
-        country: form.country,
-        docType: form.docType,
-        docNumber: form.docNumber,
-        email: form.email,
-        createAt: new Date(),
-       });
+        // form.password =
 
+       this.userService.create(user.uid, formWithoutPassword);
        this.toast.show('Usuario registrado exitosamente');
        this.registerForm.reset();
-       this.router.navigate(['/auth/login'])
+       this.router.navigate(['/home'])
       },
       error: (error) => {
         console.error("Error en el registro", error);
