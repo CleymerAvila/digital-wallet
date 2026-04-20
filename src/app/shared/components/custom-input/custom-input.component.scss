@@ -8,10 +8,16 @@ ion-item {
 
 
 ion-input.md {
+  // --highlight-height: 0;
+  // border: none;
+  // --border-width: 0;
+  // box-shadow: none;
   --margin-top: 20px;
   --border-radius: 15px;
   --background: #f2efef;
   --highlight-color-focused: blue;
+  --highlight-color-invalid: red;
+  --highlight-color-valid: green;
   font-weight: 700;
   color: rgba(0, 0, 0, 0.7);
 }

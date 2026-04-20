@@ -1,4 +1,4 @@
-<ion-item>
+<ion-item lines="none">
 
   <ion-input
     [fill]="fill"
@@ -11,7 +11,9 @@
     (ionInput)="handleInput($event)"
     (ionBlur)="handleBlur()"
   >
-  <ion-icon slot="start" [name]="icon"></ion-icon>
+  @if(icon){
+    <ion-icon slot="start" [name]="icon"></ion-icon>
+  }
   </ion-input>
 </ion-item>
 <!-- errores -->

@@ -16,6 +16,11 @@ const routes: Routes = [
     canActivate: [authGuard],
   },
   {
+    path: 'add-card',
+    loadChildren: () => import('./pages/add-card/add-card.module').then( m => m.AddCardPageModule),
+    canActivate: [authGuard]
+  },
+  {
     path: 'auth',
     loadChildren: () =>
       import('./pages/auth/auth.module').then((m) => m.AuthPageModule),
@@ -30,7 +35,7 @@ const routes: Routes = [
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules }),
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, enableTracing: true }),
   ],
   exports: [RouterModule],
 })

@@ -1,5 +1,5 @@
 
-<ion-content scrollY="false" class="ion-no-padding">
+<ion-content scrollY="true" class="ion-no-padding">
   <ion-card>
     <ion-card-header>
       <ion-title class="ion-text-start">
@@ -20,7 +20,6 @@
               <ion-label position="start" >Correo</ion-label>
               <app-custom-input
                 formControlName="email"
-                label="Email"
                 type="email"
                 placeholder="youremail@gmail.com"
                 [errorMessages]="{
@@ -36,7 +35,6 @@
               <ion-label position="start" >Contraseña </ion-label>
               <app-custom-input
                 formControlName="password"
-                label="password"
                 type="password"
                 placeholder="*******"
                 [errorMessages]="{
