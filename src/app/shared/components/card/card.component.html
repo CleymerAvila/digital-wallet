@@ -1,0 +1,71 @@
+<div class="cards-wrapper"
+  (touchstart)="onTouchStart($event)"
+  (touchend)="onTouchEnd($event)">
+
+  <!-- Stack de tarjetas -->
+  <div class="card-stack">
+    <div
+      *ngFor="let card of cards; let i = index"
+      #cardItem
+      class="card-item"
+      [class.card-active]="i === currentIndex"
+      [style.background]="'linear-gradient(135deg,' + card.gradient[0] + ',' + card.gradient[1] + ')'">
+
+      <!-- Shimmer -->
+      <div class="shimmer-overlay"></div>
+      <!-- Header: chip + tipo -->
+      <div class="card-header">
+          <!-- Número solo en tarjeta activa -->
+          <div class="card-number card-info-item" *ngIf="i === currentIndex">
+            {{ getMaskedNumber(card.cardNumber) }}
+          </div>
+          <div class="card-type-logo">
+            <span *ngIf="card.type === 'visa'" class="visa-text">VISA</span>
+            <div *ngIf="card.type === 'mastercard'" class="mc-circles">
+              <div class="mc-left"></div>
+              <div class="mc-right"></div>
+            </div>
+          </div>
+          <!-- Botones acción — solo si hay tarjetas -->
+          <div class="card-actions" *ngIf="cards.length > 0">
+            <button class="action-btn edit-btn" (click)="onEdit()">
+              <ion-icon name="pencil-outline"></ion-icon>
+            </button>
+            <button class="action-btn delete-btn" (click)="onDelete()">
+              <ion-icon name="trash-outline"></ion-icon>
+            </button>
+          </div>
+      </div>
+
+      <!-- Footer solo en tarjeta activa -->
+      <div class="card-footer" *ngIf="i === currentIndex">
+        <div class="type-and-exp-date-info">
+          <div class="card-type-info">
+            <label>Card Type</label>
+            <span>{{ card.type | titlecase }}</span>
+          </div>
+          <div class="card-exp-date-info">
+            <label>Exp. Date</label>
+            <span>{{ card.expiryDate }}</span>
+          </div>
+        </div>
+        <div class="card-info-item">
+          <label>Name</label>
+          <span>{{ card.cardHolder }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Dots -->
+  <div class="card-dots" *ngIf="cards.length > 1">
+    <span
+      *ngFor="let card of cards; let i = index"
+      class="dot"
+      [class.dot-active]="i === currentIndex"
+      (click)="selectCard(i)">
+    </span>
+  </div>
+
+</div>

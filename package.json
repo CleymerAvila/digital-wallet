@@ -33,6 +33,7 @@
     "@capacitor/toast": "^8.0.1",
     "@capawesome/capacitor-google-sign-in": "^0.1.2",
     "@ionic/angular": "^8.0.0",
+    "animejs": "^4.3.6",
     "capacitor-native-biometric": "^4.2.2",
     "firebase": "^11.10.0",
     "ionicons": "^7.0.0",

@@ -1,0 +1,242 @@
+.cards-wrapper {
+  padding: 0 22px;
+  user-select: none;
+}
+
+// ── Stack 3D ──────────────────────────────────────────
+.card-stack {
+  position: relative;
+  height: 240px;
+  perspective: 1000px;
+}
+
+.card-item {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  padding: 40px;
+  overflow: hidden;
+  display: flex;
+  gap: 30px;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  will-change: transform, opacity;
+  transform-origin: top center;
+  transition: box-shadow 0.3s ease;
+
+  &.card-active {
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
+  }
+}
+
+// ── Shimmer ───────────────────────────────────────────
+.shimmer-overlay {
+  position: absolute;
+  inset: 0;
+  width: 80px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+
+// ── Header ────────────────────────────────────────────
+.card-header {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: space-between;
+  align-items: first baseline;
+}
+
+// ── Chip ──────────────────────────────────────────────
+.card-chip {
+  position: relative;
+  width: 44px;
+  height: 34px;
+  background: linear-gradient(135deg, #c8992a, #f0c96e);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .chip-body {
+    position: relative;
+    width: 28px;
+    height: 22px;
+
+    .chip-h, .chip-v {
+      position: absolute;
+      background: rgba(0,0,0,0.2);
+      border-radius: 2px;
+    }
+
+    .chip-h {
+      width: 100%;
+      height: 2px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .chip-v {
+      height: 100%;
+      width: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
+// ── Logo ──────────────────────────────────────────────
+.card-type-logo {
+  .visa-text {
+    font-size: 22px;
+    font-weight: 900;
+    font-style: italic;
+    color: white;
+    letter-spacing: 1px;
+  }
+
+  .mc-circles {
+    display: flex;
+
+    .mc-left, .mc-right {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+    }
+
+    .mc-left  { background: #eb001b; }
+    .mc-right { background: #f79e1b; margin-left: -10px; opacity: 0.9; }
+  }
+}
+
+// ── Número ────────────────────────────────────────────
+.card-number {
+  font-size: 14px;
+  font-weight: bolder;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 2px;
+  font-family: 'Courier New', monospace;
+}
+
+// ── Footer ────────────────────────────────────────────
+.card-footer {
+  display: flex;
+  flex-direction: column;
+  // align-items: flex-start;
+  gap: 20px;
+
+  .type-and-exp-date-info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .card-type-info, .card-exp-date-info {
+    display: flex;
+    flex-direction: column;
+    align-items:first baseline;
+    label {
+      font-size: 9px;
+      color: rgba(255,255,255,0.55);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    span {
+      font-size: 13px;
+      color: white;
+      font-weight: 600;
+    }
+  }
+
+  .card-info-item {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    label {
+      font-size: 9px;
+      color: rgba(255,255,255,0.55);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    span {
+      font-size: 13px;
+      color: white;
+      font-weight: 600;
+    }
+  }
+}
+
+// ── Botones acción ────────────────────────────────────
+.card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 12px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  .action-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 8px;
+    border-radius: 50px;
+    border: 1.5px solid rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    ion-icon {
+      font-size: 20px;
+    }
+
+    // &.edit-btn {
+    //   color: #3b82f6;
+    //   border-color: rgba(59, 130, 246, 0.3);
+
+    //   &:active { background: rgba(59, 130, 246, 0.1); }
+    // }
+
+    // &.delete-btn {
+    //   color: #ef4444;
+    //   border-color: rgba(239, 68, 68, 0.3);
+
+    //   &:active { background: rgba(239, 68, 68, 0.1); }
+    // }
+  }
+}
+
+// // ── Dots ──────────────────────────────────────────────
+// .card-dots {
+//   display: flex;
+//   justify-content: center;
+//   gap: 6px;
+//   margin-top: 16px;
+
+//   .dot {
+//     width: 6px;
+//     height: 6px;
+//     border-radius: 50%;
+//     background: #ccc;
+//     cursor: pointer;
+//     transition: all 0.3s ease;
+
+//     &.dot-active {
+//       width: 20px;
+//       border-radius: 4px;
+//       background: #1a1a2e;
+//     }
+//   }
+// }
