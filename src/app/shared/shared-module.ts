@@ -5,12 +5,13 @@ import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomInputComponent } from './components/custom-input/custom-input.component';
 import { QuickActionsComponent } from './components/quick-actions/quick-actions.component';
-import { CardComponent } from './components/card/card.component';
+import { CardListComponent } from './components/card-list/card-list.component';
+import { CreditCardComponent } from './components/credit-card/credit-card.component';
 
 
 
 @NgModule({
-  declarations: [CustomInputComponent, QuickActionsComponent, CardComponent],
+  declarations: [CustomInputComponent, QuickActionsComponent, CardListComponent, CreditCardComponent],
   imports: [
     CommonModule,
     IonicModule,
@@ -25,7 +26,8 @@ import { CardComponent } from './components/card/card.component';
     RouterModule,
     CustomInputComponent,
     QuickActionsComponent,
-    CardComponent
+    CardListComponent,
+    CreditCardComponent
   ]
 })
 export class SharedModule { }

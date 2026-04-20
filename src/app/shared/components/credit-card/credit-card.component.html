@@ -1,0 +1,59 @@
+<div
+  class="credit-card"
+  [class.rotated]="rotated"
+  [style.background]="'linear-gradient(135deg,' + card.gradient[0] + ',' + card.gradient[1] + ')'"
+  (touchstart)="onTouchStart($event)"
+  (touchmove)="onTouchMove($event)"
+  (touchend)="onTouchEnd()"
+  (mousemove)="onMouseMove($event)"
+  (mouseleave)="onMouseLeave()">
+
+  <!-- Shimmer -->
+  <div class="shimmer-overlay"></div>
+
+  <!-- Brillo de tilt -->
+  <div class="tilt-glare" [style.opacity]="glareOpacity" [style.background]="glareGradient"></div>
+
+  <!-- Header -->
+  <div class="card-header">
+    <div class="card-type-logo">
+      <span *ngIf="card.type === 'visa'" class="visa-text">VISA</span>
+      <div *ngIf="card.type === 'mastercard'" class="mc-circles">
+        <div class="mc-left"></div>
+        <div class="mc-right"></div>
+      </div>
+    </div>
+
+    <div class="card-actions" *ngIf="showActions">
+      <button class="action-btn" (click)="onEdit()">
+        <ion-icon name="pencil-outline"></ion-icon>
+      </button>
+      <button class="action-btn" (click)="onDelete()">
+        <ion-icon name="trash-outline"></ion-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- Número -->
+  <div class="card-number card-info-item">
+    {{ masked ? getMaskedNumber(card.cardNumber) : card.cardNumber }}
+  </div>
+
+  <!-- Footer -->
+  <div class="card-footer">
+    <div class="type-and-exp-date-info">
+      <div class="card-type-info card-info-item">
+        <label>Card Type</label>
+        <span>{{ card.type | titlecase }}</span>
+      </div>
+      <div class="card-exp-date-info card-info-item">
+        <label>Exp. Date</label>
+        <span>{{ card.expiryDate }}</span>
+      </div>
+    </div>
+    <div class="card-info-item">
+      <label>Name</label>
+      <span>{{ card.cardHolder }}</span>
+    </div>
+  </div>
+</div>

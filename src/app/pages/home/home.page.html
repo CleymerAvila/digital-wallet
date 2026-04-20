@@ -28,13 +28,13 @@
         </div>
       </div>
     } @else {
-      <app-card
-        #cardComponent
-        [cards]="cards"
-        mode="stack"
-        (editCard)="onEditCardCredit($event)"
-        (deleteCard)="onDeleteCardCredit($event)">
-      </app-card>
+<!-- En stack -->
+    <app-card-list
+      [cards]="cards"
+      mode="stack"
+      (editCard)="onEditCardCredit($event)"
+      (deleteCard)="onDeleteCardCredit($event)">
+    </app-card-list>
     }
 
   <div class="quick-actions">

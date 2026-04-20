@@ -9,10 +9,10 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <!-- dentro del modal -->
-  <app-card
+  <!-- En carousel -->
+  <app-card-list
     [cards]="cards"
     mode="carousel"
-    >
-  </app-card>
+    (selectedCard)="onSelectedCard($event)">
+  </app-card-list>
 </ion-content>

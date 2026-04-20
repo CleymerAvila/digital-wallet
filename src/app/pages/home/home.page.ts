@@ -1,4 +1,3 @@
-import { CardComponent } from './../../shared/components/card/card.component';
 import { CreditCard } from './../../core/models/card-model';
 import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
@@ -7,6 +6,8 @@ import { FireauthService } from 'src/app/core/services/fireauth-service';
 import { ToastService } from 'src/app/core/services/toast-service';
 import { ProfileComponent } from './profile/profile.component';
 import { ChangeCardComponent } from './change-card/change-card.component';
+import { CreditCardComponent } from 'src/app/shared/components/credit-card/credit-card.component';
+import { CardListComponent } from 'src/app/shared/components/card-list/card-list.component';
 
 
 @Component({
@@ -18,7 +19,7 @@ import { ChangeCardComponent } from './change-card/change-card.component';
 export class HomePage {
 
   currentUser$ = this.authService.currentUser$;
-  @ViewChild('cardComponent') cardComponent!: CardComponent;
+  @ViewChild('cardComponent') cardComponent!: CardListComponent;
 
   cards: CreditCard[] = [
     {

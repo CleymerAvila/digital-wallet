@@ -14,12 +14,12 @@
       </ion-label>
     </ion-card-header>
     <ion-card-content>
-      <app-card
-        #cardComponent
-        [cards]="cards"
-        mode="stack"
-        >
-      </app-card>
+
+      <app-credit-card
+        [card]="card"
+        
+      />
+
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <ion-grid>
           <ion-row>

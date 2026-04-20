@@ -1,0 +1,188 @@
+:host {
+  display: block;
+  perspective: 900px;
+}
+
+// ── Tarjeta base ──────────────────────────────────────
+.credit-card {
+  position: relative;
+  width: 100%;
+  height: 210px;
+  border-radius: 20px;
+  padding: 28px 32px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
+  will-change: transform;
+  transform-style: preserve-3d;
+  transition: box-shadow 0.3s ease;
+  cursor: pointer;
+  user-select: none;
+
+  &.rotated {
+    // Modo portrait (carousel)
+    width: 340px;
+    height: 210px;
+    transform: rotate(90deg);
+    transform-origin: center center;
+
+    .card-number {
+      font-size: 12px;
+      letter-spacing: 1.5px;
+    }
+
+    .visa-text {
+      font-size: 18px;
+    }
+
+    .card-footer {
+      gap: 10px;
+
+      .type-and-exp-date-info {
+        flex-direction: column;
+        gap: 6px;
+      }
+    }
+  }
+}
+
+// ── Shimmer ───────────────────────────────────────────
+.shimmer-overlay {
+  position: absolute;
+  inset: 0;
+  width: 80px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.18),
+    transparent
+  );
+  transform: skewX(-20deg) translateX(-100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+// ── Brillo de tilt ────────────────────────────────────
+.tilt-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  pointer-events: none;
+  z-index: 2;
+  transition: opacity 0.2s ease;
+}
+
+// ── Header ────────────────────────────────────────────
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  position: relative;
+  z-index: 3;
+}
+
+// ── Logo ──────────────────────────────────────────────
+.card-type-logo {
+  .visa-text {
+    font-size: 22px;
+    font-weight: 900;
+    font-style: italic;
+    color: white;
+    letter-spacing: 1px;
+  }
+
+  .mc-circles {
+    display: flex;
+
+    .mc-left,
+    .mc-right {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+    }
+
+    .mc-left  { background: #eb001b; }
+    .mc-right { background: #f79e1b; margin-left: -10px; opacity: 0.9; }
+  }
+}
+
+// ── Botones acción ────────────────────────────────────
+.card-actions {
+  display: flex;
+  gap: 8px;
+
+  .action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border-radius: 50px;
+    border: 1.5px solid rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+    transition: background 0.2s ease;
+
+    ion-icon {
+      font-size: 18px;
+      color: white;
+    }
+
+    &:active {
+      background: rgba(255, 255, 255, 0.28);
+    }
+  }
+}
+
+// ── Número ────────────────────────────────────────────
+.card-number {
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 2px;
+  font-family: 'Courier New', monospace;
+  position: relative;
+  z-index: 3;
+}
+
+// ── Footer ────────────────────────────────────────────
+.card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+  z-index: 3;
+
+  .type-and-exp-date-info {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  :is(.card-type-info, .card-exp-date-info, .card-info-item) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  :is(.card-type-info, .card-exp-date-info) {
+    align-items: first baseline;
+  }
+
+  .card-info-item {
+    align-items: flex-start;
+  }
+
+  :is(.card-type-info, .card-exp-date-info, .card-info-item) label {
+    font-size: 9px;
+    color: rgba(255, 255, 255, 0.55);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  :is(.card-type-info, .card-exp-date-info, .card-info-item) span {
+    font-size: 13px;
+    color: white;
+    font-weight: 600;
+  }
+}

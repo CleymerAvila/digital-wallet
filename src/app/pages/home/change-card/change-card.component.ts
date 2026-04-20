@@ -37,4 +37,8 @@ export class ChangeCardComponent  implements OnInit {
 
   ngOnInit() {}
 
+  onSelectedCard(event: any){
+    console.log(event);
+  }
+
 }
