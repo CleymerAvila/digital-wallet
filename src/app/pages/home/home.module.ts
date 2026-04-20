@@ -7,6 +7,7 @@ import { HomePage } from './home.page';
 import { HomePageRoutingModule } from './home-routing.module';
 import { SharedModule } from 'src/app/shared/shared-module';
 import { ProfileComponent } from './profile/profile.component';
+import { ChangeCardComponent } from './change-card/change-card.component';
 
 
 @NgModule({
@@ -17,6 +18,6 @@ import { ProfileComponent } from './profile/profile.component';
     SharedModule,
     HomePageRoutingModule
   ],
-  declarations: [HomePage, ProfileComponent]
+  declarations: [HomePage, ProfileComponent, ChangeCardComponent]
 })
 export class HomePageModule {}

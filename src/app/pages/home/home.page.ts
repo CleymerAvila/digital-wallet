@@ -1,10 +1,11 @@
 import { CreditCard } from './../../core/models/card-model';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AnimationController, ModalController, Animation } from '@ionic/angular';
 import { FireauthService } from 'src/app/core/services/fireauth-service';
 import { ToastService } from 'src/app/core/services/toast-service';
 import { ProfileComponent } from './profile/profile.component';
+import { ChangeCardComponent } from './change-card/change-card.component';
 
 
 @Component({
@@ -41,9 +42,52 @@ export class HomePage {
     private authService: FireauthService,
     private router: Router,
     private toast: ToastService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private animationCtrl: AnimationController
   ) {}
 
+  async openChangeCardModal() {
+    const enterAnimation = (baseEl: HTMLElement): Animation => {
+      const root = baseEl.shadowRoot!;
+      const backdropAnim = this.animationCtrl
+        .create()
+        .addElement(root.querySelector('ion-backdrop')!)
+        .fromTo('opacity', '0.01', 'var(--backdrop-opacity');
+
+      const wrapperAnim = this.animationCtrl
+        .create()
+        .addElement(root.querySelector('.modal-wrapper')!)
+        .keyframes([
+          { offset: 1, opacity: '0', transform: 'scale(0)' },
+          { offset: 1, opacity: '1', transform: 'scale(1)' }
+        ]);
+
+      return this.animationCtrl
+        .create()
+        .addElement(baseEl)
+        .easing('ease-out')
+        .duration(300)
+        .addAnimation([backdropAnim, wrapperAnim])
+    }
+
+    const leaveAnimation = (baseEl: HTMLElement) => {
+      return enterAnimation(baseEl).direction('reverse');
+    };
+
+    const modal = await this.modalController.create({
+      component: ChangeCardComponent,
+      enterAnimation,
+      leaveAnimation,
+      // Puedes pasar datos con componentProps:
+      // componentProps: { titulo: 'Mi equipo' }
+    });
+
+    await modal.present();
+
+    // Escuchar cuando se cierra
+    const { data } = await modal.onDidDismiss();
+    console.log('Modal cerrado con data:', data);
+  }
   async openProfile() {
     const modal = await this.modalController.create({
       component: ProfileComponent,

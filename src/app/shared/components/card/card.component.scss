@@ -6,11 +6,12 @@
 // ── Stack 3D ──────────────────────────────────────────
 .card-stack {
   position: relative;
-  height: 240px;
+  height: 230px;
   perspective: 1000px;
 }
 
 .card-item {
+  margin-top: 20px;
   position: absolute;
   inset: 0;
   border-radius: 20px;
@@ -201,42 +202,5 @@
     ion-icon {
       font-size: 20px;
     }
-
-    // &.edit-btn {
-    //   color: #3b82f6;
-    //   border-color: rgba(59, 130, 246, 0.3);
-
-    //   &:active { background: rgba(59, 130, 246, 0.1); }
-    // }
-
-    // &.delete-btn {
-    //   color: #ef4444;
-    //   border-color: rgba(239, 68, 68, 0.3);
-
-    //   &:active { background: rgba(239, 68, 68, 0.1); }
-    // }
   }
 }
-
-// // ── Dots ──────────────────────────────────────────────
-// .card-dots {
-//   display: flex;
-//   justify-content: center;
-//   gap: 6px;
-//   margin-top: 16px;
-
-//   .dot {
-//     width: 6px;
-//     height: 6px;
-//     border-radius: 50%;
-//     background: #ccc;
-//     cursor: pointer;
-//     transition: all 0.3s ease;
-
-//     &.dot-active {
-//       width: 20px;
-//       border-radius: 4px;
-//       background: #1a1a2e;
-//     }
-//   }
-// }
