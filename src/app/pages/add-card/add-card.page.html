@@ -17,20 +17,19 @@
 
       <app-credit-card
         [card]="card"
-        
       />
 
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <ion-grid>
           <ion-row>
             <ion-col>
-              <ion-label position="start">Nombre </ion-label>
+              <ion-label position="start">Nombre Titular </ion-label>
               <app-custom-input
                 formControlName="cardHolderName"
                 type="text"
-                placeholder="Andrea Carolina"
+                placeholder="James Smith"
                 [errorMessages]="{
-                  required: 'El CardHolder es obligatorio'
+                  required: 'El nombre del titular es obligatorio'
                 }"
               >
               </app-custom-input>
@@ -68,7 +67,7 @@
               <app-custom-input
                 formControlName="cvc"
                 type="number"
-                placeholder="Barcelona"
+                placeholder="124"
                 [errorMessages]="{
                   required: 'El pais es obligatorio'
                 }"

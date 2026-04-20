@@ -29,6 +29,7 @@ export class HomePage {
       expiryDate: '12/27',
       balance: 2450.00,
       type: 'visa',
+      cvc: 242,
       gradient: ['#667eea', '#764ba2']
     },
     {
@@ -37,6 +38,7 @@ export class HomePage {
       cardNumber: '5353535353535353',
       expiryDate: '08/26',
       balance: 890.50,
+      cvc: 239,
       type: 'mastercard',
       gradient: ['#f093fb', '#f5576c']
     }

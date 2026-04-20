@@ -18,6 +18,7 @@ export class ChangeCardComponent  implements OnInit {
         cardNumber: '4242424242424242',
         expiryDate: '12/27',
         balance: 2450.00,
+        cvc: 124,
         type: 'visa',
         gradient: ['#667eea', '#764ba2']
       },
@@ -27,6 +28,7 @@ export class ChangeCardComponent  implements OnInit {
         cardNumber: '5353535353535353',
         expiryDate: '08/26',
         balance: 890.50,
+        cvc: 124,
         type: 'mastercard',
         gradient: ['#f093fb', '#f5576c']
       }

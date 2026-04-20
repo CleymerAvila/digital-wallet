@@ -18,6 +18,7 @@
   <div class="card-header">
     <div class="card-type-logo">
       <span *ngIf="card.type === 'visa'" class="visa-text">VISA</span>
+      <span *ngIf="card.type === 'default'" class="default-text">DEBIT</span>
       <div *ngIf="card.type === 'mastercard'" class="mc-circles">
         <div class="mc-left"></div>
         <div class="mc-right"></div>

@@ -5,6 +5,7 @@ export interface CreditCard {
   cardNumber: string;
   expiryDate: string;
   balance: number;
-  type: 'visa'  | 'mastercard';
+  cvc: number;
+  type: 'visa'  | 'mastercard' | 'default';
   gradient: string[]
 }
