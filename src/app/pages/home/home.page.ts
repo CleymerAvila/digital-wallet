@@ -1,5 +1,6 @@
+import { CardComponent } from './../../shared/components/card/card.component';
 import { CreditCard } from './../../core/models/card-model';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AnimationController, ModalController, Animation } from '@ionic/angular';
 import { FireauthService } from 'src/app/core/services/fireauth-service';
@@ -17,6 +18,7 @@ import { ChangeCardComponent } from './change-card/change-card.component';
 export class HomePage {
 
   currentUser$ = this.authService.currentUser$;
+  @ViewChild('cardComponent') cardComponent!: CardComponent;
 
   cards: CreditCard[] = [
     {
@@ -45,6 +47,18 @@ export class HomePage {
     private modalController: ModalController,
     private animationCtrl: AnimationController
   ) {}
+
+  ionViewDidEnter(){
+    this.cardComponent?.triggerEntrance();
+  }
+
+  onEditCardCredit(e: any): void {
+
+  }
+
+  onDeleteCardCredit(e: any): void {
+
+  }
 
   async openChangeCardModal() {
     const enterAnimation = (baseEl: HTMLElement): Animation => {

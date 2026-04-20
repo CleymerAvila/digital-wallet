@@ -17,23 +17,24 @@
     </div>
   </div>
 
-    @defer (on idle) {
-      @if(!cards.length){
-        <div class="card-section">
-          <div class="empty-card">
-            <ion-icon name="card-outline"></ion-icon>
-            <p>No hay tarjetas disponibles.</p>
-            <ion-button shape="round" fill="solid" color="medium" size="small">
-              + agregar tarjeta
-            </ion-button>
-          </div>
+    @if(!cards.length){
+      <div class="card-section">
+        <div class="empty-card">
+          <ion-icon name="card-outline"></ion-icon>
+          <p>No hay tarjetas disponibles.</p>
+          <ion-button shape="round" fill="solid" color="medium" size="small">
+            + agregar tarjeta
+          </ion-button>
         </div>
-      } @else {
-        <!-- home.page.html -->
-         <app-card
-          [cards]="cards"
-         />
-      }
+      </div>
+    } @else {
+      <app-card
+        #cardComponent
+        [cards]="cards"
+        mode="stack"
+        (editCard)="onEditCardCredit($event)"
+        (deleteCard)="onDeleteCardCredit($event)">
+      </app-card>
     }
 
   <div class="quick-actions">

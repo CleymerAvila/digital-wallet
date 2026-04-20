@@ -54,43 +54,6 @@
   align-items: first baseline;
 }
 
-// ── Chip ──────────────────────────────────────────────
-.card-chip {
-  position: relative;
-  width: 44px;
-  height: 34px;
-  background: linear-gradient(135deg, #c8992a, #f0c96e);
-  border-radius: 7px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .chip-body {
-    position: relative;
-    width: 28px;
-    height: 22px;
-
-    .chip-h, .chip-v {
-      position: absolute;
-      background: rgba(0,0,0,0.2);
-      border-radius: 2px;
-    }
-
-    .chip-h {
-      width: 100%;
-      height: 2px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-
-    .chip-v {
-      height: 100%;
-      width: 2px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-}
 
 // ── Logo ──────────────────────────────────────────────
 .card-type-logo {
@@ -134,44 +97,33 @@
 
   .type-and-exp-date-info {
     display: flex;
-    flex-direction: row;
     justify-content: space-between;
   }
 
-  .card-type-info, .card-exp-date-info {
+  :is(.card-type-info, .card-exp-date-info, .card-info-item) {
     display: flex;
     flex-direction: column;
-    align-items:first baseline;
-    label {
-      font-size: 9px;
-      color: rgba(255,255,255,0.55);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+  }
 
-    span {
-      font-size: 13px;
-      color: white;
-      font-weight: 600;
-    }
+  :is(.card-type-info, .card-exp-date-info) {
+    align-items:first baseline;
   }
 
   .card-info-item {
-    display: flex;
-    flex-direction: column;
     align-items: start;
-    label {
-      font-size: 9px;
-      color: rgba(255,255,255,0.55);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+  }
 
-    span {
-      font-size: 13px;
-      color: white;
-      font-weight: 600;
-    }
+  :is(.card-type-info, .card-exp-date-info, .card-info-item) label {
+    font-size: 9px;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  :is(.card-type-info, .card-exp-date-info, .card-info-item) span {
+    font-size: 13px;
+    color: white;
+    font-weight: 600;
   }
 }
 
@@ -198,9 +150,137 @@
     font-weight: 500;
     cursor: pointer;
     transition: background 0.2s ease;
+  }
+}
 
-    ion-icon {
-      font-size: 20px;
+.card-actions .action-btn ion-icon,
+.carousel-action .default-btn ion-icon {
+  font-size: 20px;
+}
+
+
+// ── Dots (stack) ──────────────────────────────────────
+.stack-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+
+    &.dot-active {
+      width: 18px;
+      border-radius: 3px;
+      background: var(--ion-color-primary, #3880ff);
     }
+  }
+}
+
+// ── Carousel portrait (modal) ─────────────────────────
+
+.carousel-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+  padding: 40px 0 32px;
+}
+
+.carousel-track {
+  position: relative;
+  // La tarjeta original es 230px alto × ~340px ancho
+  // Rotada 90°: ocupa 340px de alto × 230px de ancho en pantalla
+  width: 230px;
+  height: 340px;
+  overflow: hidden;
+}
+
+.carousel-slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.carousel-card {
+  // Dimensiones reales (landscape)
+  width: 340px;
+  height: 210px;
+  position: relative;
+  margin: 0;
+  flex-shrink: 0;
+  border-radius: 20px;
+  padding: 28px 32px;
+
+  // Rotación portrait
+  transform: rotate(90deg);
+  transform-origin: center center;
+
+  // Ajustes tipográficos para la orientación rotada
+  .card-number {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+  }
+
+  .visa-text {
+    font-size: 18px;
+  }
+
+  .card-footer {
+    gap: 10px;
+
+    .type-and-exp-date-info {
+      flex-direction: column;
+      gap: 6px;
+    }
+  }
+}
+
+// Info debajo
+.carousel-info {
+  text-align: center;
+
+  .carousel-name {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--ion-text-color);
+    margin: 0 0 4px;
+  }
+
+  .carousel-sub {
+    font-size: 14px;
+    color: var(--ion-color-medium);
+    margin: 0;
+  }
+}
+
+// Botón Set as Default
+.carousel-action {
+  width: 100%;
+  padding: 0 24px;
+
+  .default-btn {
+    width: 100%;
+    padding: 16px;
+    border-radius: 50px;
+    border: none;
+    background: white;
+    color: #111;
+    font-size: 16px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.12);
   }
 }
