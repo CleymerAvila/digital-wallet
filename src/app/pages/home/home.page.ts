@@ -1,5 +1,5 @@
 import { CreditCard } from './../../core/models/card-model';
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AnimationController, ModalController, Animation } from '@ionic/angular';
 import { FireauthService } from 'src/app/core/services/fireauth-service';
@@ -8,6 +8,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { ChangeCardComponent } from './change-card/change-card.component';
 import { CreditCardComponent } from 'src/app/shared/components/credit-card/credit-card.component';
 import { CardListComponent } from 'src/app/shared/components/card-list/card-list.component';
+import { CardService } from 'src/app/core/services/card-service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -16,40 +18,33 @@ import { CardListComponent } from 'src/app/shared/components/card-list/card-list
   styleUrls: ['home.page.scss'],
   standalone: false,
 })
-export class HomePage {
+export class HomePage implements OnInit {
 
   currentUser$ = this.authService.currentUser$;
+  cards$!: Observable<CreditCard[]>
   @ViewChild('cardComponent') cardComponent!: CardListComponent;
 
-  cards: CreditCard[] = [
-    {
-      id: '1',
-      cardHolder: 'Cesar Rodriguez',
-      cardNumber: '4242424242424242',
-      expiryDate: '12/27',
-      balance: 2450.00,
-      type: 'visa',
-      cvc: 242,
-      gradient: ['#667eea', '#764ba2']
-    },
-    {
-      id: '2',
-      cardHolder: 'Cesar Rodriguez',
-      cardNumber: '5353535353535353',
-      expiryDate: '08/26',
-      balance: 890.50,
-      cvc: 239,
-      type: 'mastercard',
-      gradient: ['#f093fb', '#f5576c']
-    }
-  ];
+  currentUserId: string = '';
+
   constructor(
     private authService: FireauthService,
+    private cardService: CardService,
     private router: Router,
     private toast: ToastService,
     private modalController: ModalController,
     private animationCtrl: AnimationController
-  ) {}
+  ) {
+
+    this.authService.currentUser$.subscribe(user => {
+      if(user) {
+        this.currentUserId = user.uid;
+        this.cards$ = this.cardService.listenUserCards$(this.currentUserId);
+      }
+    })
+  }
+
+  ngOnInit(): void {
+  }
 
   ionViewDidEnter(){
     this.cardComponent?.triggerEntrance();

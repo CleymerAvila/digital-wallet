@@ -10,9 +10,11 @@
 </ion-header>
 <ion-content>
   <!-- En carousel -->
-  <app-card-list
-    [cards]="cards"
-    mode="carousel"
-    (selectedCard)="onSelectedCard($event)">
-  </app-card-list>
+  @if((cards$ | async); as cards){
+    <app-card-list
+      [cards]="cards"
+      mode="carousel"
+      (selectedCard)="onSelectedCard($event)">
+    </app-card-list>
+  }
 </ion-content>

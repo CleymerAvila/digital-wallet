@@ -4,9 +4,8 @@ import { Router } from '@angular/router';
 import { FireauthService } from 'src/app/core/services/fireauth-service';
 import { ToastService } from 'src/app/core/services/toast-service';
 import { UserService } from 'src/app/core/services/user-service';
-import { UserCredential } from 'firebase/auth';
 import { CreditCard } from 'src/app/core/models/card-model';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
+import { CardService } from 'src/app/core/services/card-service';
 @Component({
   selector: 'app-add-card',
   templateUrl: './add-card.page.html',
@@ -15,7 +14,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop'
 })
 export class AddCardPage implements OnInit {
 name!: FormControl;
-  cardHolderName!: FormControl;
+  cardHolder!: FormControl;
   cardNumber!: FormControl;
   expiryDate!: FormControl;
   type!: FormControl;
@@ -24,19 +23,24 @@ name!: FormControl;
 
   card: CreditCard = {
     id: '1',
+    userId: '',
     cardHolder: 'YOUR NAME',
     cardNumber: 'XXXX XXXX XXXX XXXX',
     expiryDate: 'MM/YY',
+    isDefault: false,
     balance: 2450.00,
     type: 'default',
     cvc: 124,
-    gradient: ['#bdc3c7', '#2c3e50']
+    gradient: ['#bdc3c7', '#2c3e50'],
+    createdAt: new Date(),
+    updatedAt: new Date()
   }
 
   constructor(
     private userService: UserService,
     private toast: ToastService,
     private authService: FireauthService,
+    private cardService: CardService,
     private router: Router
   ) {
   }
@@ -48,7 +52,7 @@ name!: FormControl;
   }
 
   initForm() {
-    this.cardHolderName = new FormControl(this.card.cardHolder, Validators.required);
+    this.cardHolder = new FormControl(this.card.cardHolder, Validators.required);
     this.cardNumber = new FormControl(this.card.cardNumber, Validators.required);
     this.expiryDate = new FormControl(this.card.expiryDate, Validators.required);
     this.type = new FormControl(this.card.type, Validators.required);
@@ -56,7 +60,7 @@ name!: FormControl;
 
 
     this.registerForm = new FormGroup({
-      cardHolderName: this.cardHolderName,
+      cardHolder: this.cardHolder,
       cardNumber: this.cardNumber,
       expiryDate: this.expiryDate,
       type: this.type,
@@ -77,8 +81,22 @@ name!: FormControl;
       }
     })
   }
+
   async onSubmit() {
-    // await this.register(this.registerForm);
+    if(this.registerForm.valid){
+      this.authService.currentUser$.subscribe(user => {
+        try {
+          const currentUserId = user?.uid;
+          const data = this.registerForm.value;
+          this.cardService.create(currentUserId!, data);
+          this.toast.show('Tarjeta creada con exito!');
+          console.log('Tarjeta creada con exito!');
+        } catch(error: any) {
+          this.toast.show('Error al crear tarjeta '+ error.message)
+          console.error(error);
+        }
+      })
+    }
   }
 
   async register(form: any) {

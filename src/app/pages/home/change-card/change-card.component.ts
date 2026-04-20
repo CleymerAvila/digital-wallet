@@ -1,6 +1,9 @@
+import { CardService } from './../../../core/services/card-service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
+import { Observable } from 'rxjs';
 import { CreditCard } from 'src/app/core/models/card-model';
+import { FireauthService } from 'src/app/core/services/fireauth-service';
 
 @Component({
   selector: 'app-change-card',
@@ -9,38 +12,32 @@ import { CreditCard } from 'src/app/core/models/card-model';
   standalone: false,
 })
 export class ChangeCardComponent  implements OnInit {
-    constructor(private modalCtrl: ModalController) {}
-
-    cards: CreditCard[] = [
-      {
-        id: '1',
-        cardHolder: 'Cesar Rodriguez',
-        cardNumber: '4242424242424242',
-        expiryDate: '12/27',
-        balance: 2450.00,
-        cvc: 124,
-        type: 'visa',
-        gradient: ['#667eea', '#764ba2']
-      },
-      {
-        id: '2',
-        cardHolder: 'Cesar Rodriguez',
-        cardNumber: '5353535353535353',
-        expiryDate: '08/26',
-        balance: 890.50,
-        cvc: 124,
-        type: 'mastercard',
-        gradient: ['#f093fb', '#f5576c']
-      }
-    ];
-    dismiss(): void {
-      this.modalCtrl.dismiss();
+  private currentUserId: string | undefined;
+  cards$!: Observable<CreditCard[]>;
+    constructor(
+      private modalCtrl: ModalController,
+      private cardService: CardService,
+      private authService: FireauthService
+    ) {
+      this.authService.currentUser$.subscribe(user => {
+        if(user) {
+          this.currentUserId = user.uid;
+          this.cards$ = this.cardService.listenUserCards$(this.currentUserId);
+        }
+      })
     }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
-  onSelectedCard(event: any){
+  dismiss(): void {
+    this.modalCtrl.dismiss();
+  }
+
+
+  async onSelectedCard(event: any){
     console.log(event);
+    await this.cardService?.setDefaultCard(this.currentUserId!, event.cardId);
   }
 
 }
