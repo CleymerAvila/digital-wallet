@@ -1,13 +1,88 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>add-card</ion-title>
-  </ion-toolbar>
-</ion-header>
-
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">add-card</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content scrollY="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-button routerLink="/auth/login" class="back-btn" >
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title class="ion-text-start">
+        <h1 class="title">
+          Agrega Nueva Tarjeta
+        </h1>
+      </ion-title>
+      <ion-label class="ion-text-start subtitle">
+        Enlaza seguramente tu metodo de pago
+      </ion-label>
+    </ion-card-header>
+    <ion-card-content>
+      <app-card
+        #cardComponent
+        [cards]="cards"
+        mode="stack"
+        >
+      </app-card>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              <ion-label position="start">Nombre </ion-label>
+              <app-custom-input
+                formControlName="cardHolderName"
+                type="text"
+                placeholder="Andrea Carolina"
+                [errorMessages]="{
+                  required: 'El CardHolder es obligatorio'
+                }"
+              >
+              </app-custom-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label position="start">Número Tarjeta</ion-label>
+              <app-custom-input
+                formControlName="cardNumber"
+                type="number"
+                placeholder="**** **** **** ****"
+                [errorMessages]="{
+                  required: 'El numero de tarjeta es obligatoria'
+                }"
+              >
+              </app-custom-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-label position="start">Fecha Exp.</ion-label>
+              <app-custom-input
+                formControlName="expiryDate"
+                type="text"
+                placeholder=""
+                [errorMessages]="{
+                  required: 'La fecha de expedición es obligatoria'
+                }"
+              >
+              </app-custom-input>
+            </ion-col>
+            <ion-col>
+              <ion-label position="start" >CVC</ion-label>
+              <app-custom-input
+                formControlName="cvc"
+                type="number"
+                placeholder="Barcelona"
+                [errorMessages]="{
+                  required: 'El pais es obligatorio'
+                }"
+              >
+              </app-custom-input>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-button type="submit" [disabled]="registerForm.invalid">Agregar Tarjeta</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

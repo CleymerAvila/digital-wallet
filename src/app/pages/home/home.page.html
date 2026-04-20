@@ -22,7 +22,7 @@
         <div class="empty-card">
           <ion-icon name="card-outline"></ion-icon>
           <p>No hay tarjetas disponibles.</p>
-          <ion-button shape="round" fill="solid" color="medium" size="small">
+          <ion-button routerLink="/add-card" shape="round" fill="solid" color="medium" size="small">
             + agregar tarjeta
           </ion-button>
         </div>
@@ -50,6 +50,7 @@
       color="green"
     />
     <app-quick-actions
+      routerLink="/add-card"
       label="Agregar Tarjeta"
       iconName="add"
       color="darkblue"
