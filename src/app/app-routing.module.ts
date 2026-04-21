@@ -21,6 +21,11 @@ const routes: Routes = [
     canActivate: [authGuard]
   },
   {
+    path: 'payment',
+    loadChildren: () => import('./pages/payment/payment.module').then( m => m.PaymentPageModule),
+    canActivate: [authGuard]
+  },
+  {
     path: 'auth',
     loadChildren: () =>
       import('./pages/auth/auth.module').then((m) => m.AuthPageModule),
@@ -31,6 +36,7 @@ const routes: Routes = [
     redirectTo: 'home',
     pathMatch: 'full',
   },
+
 ];
 
 @NgModule({

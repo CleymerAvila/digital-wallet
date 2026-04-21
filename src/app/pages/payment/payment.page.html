@@ -1,0 +1,54 @@
+<ion-content scrollY="true">
+  <ion-card>
+    <ion-card-header>
+      <ion-button routerLink="/auth/login" class="back-btn" >
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title class="ion-text-start">
+        <h1 class="title">
+          Confirma tu pago
+        </h1>
+      </ion-title>
+      <ion-label class="ion-text-start subtitle">
+        Transaccion de NFC segura
+      </ion-label>
+    </ion-card-header>
+    <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col>
+              @if(card){
+                <app-credit-card
+                  [card]="this.card"
+                  [paymentMode]="true"
+                  [masked]="true"
+                />
+              }
+            </ion-col>
+          </ion-row>
+          <ion-row class="ion-justify-content-center ion-icon">
+            <ion-col class="ion-text-center" >
+              <ion-icon name="wifi" size="large"></ion-icon>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <ion-label>Preparado para transmitir tu pago seguro atraves de NFC.</ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col class="ion-text-center">
+              <ion-label>
+                Manten tu telefono cerca del lector
+              </ion-label>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-button type="submit">confirmar pago</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+    </ion-card-content>
+  </ion-card>
+</ion-content>
