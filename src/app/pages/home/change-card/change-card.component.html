@@ -15,7 +15,8 @@
       [cards]="cards"
       mode="carousel"
       [cardMasked]="true"
-      (selectedCard)="onSelectedCard($event)">
+      (setDefault)="onSetDefaultCard($event)"
+      >
     </app-card-list>
   }
 </ion-content>

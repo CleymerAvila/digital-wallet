@@ -1,9 +1,11 @@
-import { CardService } from './../../../core/services/card-service';
+import { CardService } from 'src/app/core/services/card-service';
 import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { Observable } from 'rxjs';
 import { CreditCard } from 'src/app/core/models/card-model';
 import { FireauthService } from 'src/app/core/services/fireauth-service';
+import { ToastService } from 'src/app/core/services/toast-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-change-card',
@@ -16,8 +18,10 @@ export class ChangeCardComponent  implements OnInit {
   cards$!: Observable<CreditCard[]>;
     constructor(
       private modalCtrl: ModalController,
+      private authService: FireauthService,
       private cardService: CardService,
-      private authService: FireauthService
+      private toastService: ToastService,
+      private router: Router
     ) {
       this.authService.currentUser$.subscribe(user => {
         if(user) {
@@ -35,9 +39,11 @@ export class ChangeCardComponent  implements OnInit {
   }
 
 
-  async onSelectedCard(event: any){
-    console.log(event);
-    await this.cardService?.setDefaultCard(this.currentUserId!, event.cardId);
+  async onSetDefaultCard(event: any){
+    await this.cardService.setDefaultCard(this.currentUserId!, event.id);
+    this.toastService.show('Tarjeta seleccionada como predeterminada');
+    this.modalCtrl.dismiss();
+    this.router.navigate(['/home'])
   }
 
 }

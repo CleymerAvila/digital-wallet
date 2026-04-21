@@ -142,7 +142,7 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
   selectCard(index: number): void {
     if (index === this.currentIndex) return;
     this.currentIndex = index;
-    this.selectedCard.emit(this.currentCard);
+    // this.selectedCard.emit(this.currentCard);
 
     if (this.mode === 'stack') {
       this.updateStackPositions();
@@ -232,7 +232,7 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
     });
 
     this.currentIndex = nextIndex;
-    this.selectedCard.emit(this.currentCard);
+    // this.selectedCard.emit(this.currentCard);
   }
 
   // ══════════════════════════════════════════════════════
@@ -269,10 +269,6 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  // ══════════════════════════════════════════════════════
-  // Acciones
-  // ══════════════════════════════════════════════════════
-
   onEdit(): void {
     // this.editCard.emit(this.currentCard);
   }
@@ -284,6 +280,7 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
       // this.deleteCard.emit(this.currentCard);
     }
   }
+
   onSetDefault(): void {
     this.setDefault.emit(this.currentCard);
   }

@@ -30,7 +30,6 @@ export class AddCardPage implements OnInit {
     cardHolder: 'YOUR NAME',
     cardNumber: 'XXXX XXXX XXXX XXXX',
     expiryDate: 'MM/YY',
-    isDefault: false,
     balance: 2450.00,
     type: 'default',
     cvc: 124,
@@ -152,6 +151,7 @@ export class AddCardPage implements OnInit {
           const data = this.registerForm.value;
           this.cardService.create(currentUserId!, data);
           this.toast.show('Tarjeta creada con exito!');
+          this.registerForm.reset();
           this.router.navigate(['/home'])
           console.log('Tarjeta creada con exito!');
         } catch(error: any) {

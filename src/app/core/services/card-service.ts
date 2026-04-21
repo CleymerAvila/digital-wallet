@@ -207,26 +207,51 @@ export class CardService {
     }
 
     async setDefaultCard(userId: string, defaultCardId: string): Promise<void> {
-      const userCards = await this.getUserCards(userId);
 
+      try {
+        // Obtener todas las tarjetas del usuario
+        const userCards = await this.getUserCards(userId);
 
-      const updates = userCards.map(async (card) => {
-        if(card.id === defaultCardId){
-          if(!card.isDefault){
-            await this.db.update<CreditCard>(this.COL, card.id, {
-              isDefault: true,
-              updatedAt: new Date()
-            })
-          }
-        } else if(card.isDefault){
-          await this.db.update<CreditCard>(this.COL, card.id, {
-            isDefault: false,
-            updatedAt: new Date
-          })
+        // Verificar que la tarjeta a establecer como default existe
+        const cardToSetAsDefault = userCards.find(card => card.id === defaultCardId);
+        if (!cardToSetAsDefault) {
+          throw new Error(`La tarjeta con ID ${defaultCardId} no existe`);
         }
-      })
 
-      await Promise.all(updates);
+        // Crear array SOLO con las promesas de las tarjetas que necesitan actualización
+        const updates = [];
+
+        for (const card of userCards) {
+          if (card.id === defaultCardId) {
+            // Si la tarjeta no es default, actualizarla
+            if (!card.isDefault) {
+              updates.push(
+                this.db.update<CreditCard>(this.COL, card.id, {
+                  isDefault: true,
+                  updatedAt: new Date()
+                })
+              );
+            }
+          } else if (card.isDefault) {
+            // Si otra tarjeta es default, quitarla
+            updates.push(
+              this.db.update<CreditCard>(this.COL, card.id, {
+                isDefault: false,
+                updatedAt: new Date()
+              })
+            );
+          }
+        }
+
+        // Ejecutar todas las actualizaciones en paralelo
+        if (updates.length > 0) {
+          await Promise.all(updates);
+        }
+
+      } catch (error) {
+        console.error('Error en setDefaultCard:', error);
+        throw error; // Re-lanzar para manejo en el componente
+      }
     }
 
     private generateCardId(): string {
