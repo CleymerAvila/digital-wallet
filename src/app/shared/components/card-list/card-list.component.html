@@ -18,7 +18,7 @@
               [card]="card"
               [showActions]="i === currentIndex"
               [masked]="cardMasked"
-              (onEdit)="onEdit()"
+              (onEdit)="onEdit($event)"
               (onDelete)="onDelete($event)"
             >
             </app-credit-card>
@@ -50,7 +50,7 @@
                 [card]="card"
                 [masked]="cardMasked"
                 [rotated]="true"
-                (onEdit)="onEdit()"
+                (onEdit)="onEdit($event)"
                 (onDelete)="onDelete($event)"
               >
               </app-credit-card>

@@ -21,6 +21,7 @@ export class CreditCardComponent implements OnInit, OnDestroy {
   @Input() showActions = false;
   @Input() masked: boolean = false;
   @Input() rotated = false; // true en modo carousel (portrait)
+  @Input() paymentMode = false; // true si es la tarjeta de pago activa
 
   @Output() onEdit = new EventEmitter<string>();
   @Output() onDelete = new EventEmitter<string>();

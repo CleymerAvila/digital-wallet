@@ -144,6 +144,67 @@
   }
 }
 
+// ── Chip de modo de pago ───────────────────────────────
+.payment-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: linear-gradient(135deg,
+    rgba(255, 215, 0, 0.3) 0%,
+    rgba(218, 165, 32, 0.4) 50%,
+    rgba(184, 134, 11, 0.3) 100%
+  );
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 215, 0, 0.5);
+  box-shadow:
+    0 2px 8px rgba(255, 215, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  margin-left: auto;
+  margin-right: 8px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    animation: chip-shine 3s infinite;
+  }
+
+  ion-icon {
+    font-size: 16px;
+    color: #C0C0C0;
+    filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
+  }
+
+  span {
+    font-size: 11px;
+    font-weight: 700;
+    color: #FFD700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    text-shadow: 0 0 4px rgba(255, 215, 0, 0.8);
+    filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.3));
+  }
+}
+
+@keyframes chip-shine {
+  0% { left: -100%; }
+  50% { left: 100%; }
+  100% { left: -100%; }
+}
+
 // ── Número ────────────────────────────────────────────
 .card-number {
   font-size: 14px;

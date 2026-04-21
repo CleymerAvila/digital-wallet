@@ -6,7 +6,10 @@
       </ion-button>
       <ion-title class="ion-text-start">
         <h1 class="title">
-          Agrega Nueva Tarjeta
+          {{ isUpdatingMode ?
+           'Actualiza Tu Tarjeta'
+           :  'Agrega Nueva Tarjeta'
+          }}
         </h1>
       </ion-title>
       <ion-label class="ion-text-start subtitle">
@@ -15,7 +18,7 @@
     </ion-card-header>
     <ion-card-content>
 
-      @if((card$ | async); as card){
+      @if(card){
         <app-credit-card
           [card]="card"
         />
@@ -50,7 +53,7 @@
                 appCreditCardFormatter
                 type="string"
                 maxLength="20"
-                placeholder="**** **** **** ****"
+                placeholder="XXXX XXXX XXXX XXXX"
                 [errorMessages]="{
                   required: 'El numero de tarjeta es obligatoria'
                 }"
@@ -66,7 +69,7 @@
                 appExpiryDateFormatter
                 type="string"
                 maxLength="5"
-                placeholder=""
+                placeholder="MM/YY"
                 [errorMessages]="{
                   required: 'La fecha de expedición es obligatoria'
                 }"
@@ -82,7 +85,7 @@
                 type="string"
                 placeholder="124"
                 [errorMessages]="{
-                  required: 'El pais es obligatorio'
+                  required: 'El cvc es requerido'
                 }"
               >
               </app-custom-input>

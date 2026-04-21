@@ -1,12 +1,8 @@
-<div
-  class="credit-card"
-  [class.rotated]="rotated"
+<div class="credit-card" [class.rotated]="rotated"
   [style.background]="'linear-gradient(135deg,' + card.gradient[0] + ',' + card.gradient[1] + ')'"
-  (touchstart)="onTouchStart($event)"
-  (touchmove)="onTouchMove($event)"
-  (touchend)="onTouchEnd()"
-  (mousemove)="onMouseMove($event)"
-  (mouseleave)="onMouseLeave()">
+  [style.height]="paymentMode ?  '150px' : '210px'"
+  (touchstart)="onTouchStart($event)" (touchmove)="onTouchMove($event)" (touchend)="onTouchEnd()"
+  (mousemove)="onMouseMove($event)" (mouseleave)="onMouseLeave()">
 
   <!-- Shimmer -->
   <div class="shimmer-overlay"></div>
@@ -25,6 +21,12 @@
       </div>
     </div>
 
+    <!-- Chip de modo de pago -->
+    <div class="payment-chip" *ngIf="paymentMode">
+      <ion-icon name="hardware-chip-sharp" size="large"></ion-icon>
+      <!-- <span>Chip Activo</span> -->
+    </div>
+
     <div class="card-actions" *ngIf="showActions">
       <button class="action-btn" (click)="onEditCard()">
         <ion-icon name="pencil-outline"></ion-icon>
@@ -36,12 +38,12 @@
   </div>
 
   <!-- Número -->
-  <div class="card-number card-info-item">
-    {{ !masked ? (card.cardNumber | creditCard: true)  :  card.cardNumber | creditCard}}
+  <div class="card-number card-info-item" [style.fontSize]="paymentMode ?  '20px ' : '13px'">
+    {{ !masked ? (card.cardNumber | creditCard: true) : card.cardNumber | creditCard}}
   </div>
 
   <!-- Footer -->
-  <div class="card-footer">
+  <div class="card-footer" *ngIf="!paymentMode">
     <div class="type-and-exp-date-info">
       <div class="card-type-info card-info-item">
         <label>Card Type</label>

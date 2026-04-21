@@ -171,13 +171,15 @@ export class CardService {
 
     async updateCard(userId: string, cardId: string, data: Partial<CreditCard>): Promise<void> {
 
-      const card = await this.db.getById(userId, cardId);
+
+      const card = await this.getCardById(userId, cardId);
       if(!card){
         throw new Error('Tarjeta no encontrada o no autorizada');
       }
 
       const updateData = {
         ...data,
+        gradient: this.getCardGradient(data.type ?? 'default'),
         updateAt: new Date()
       };
 

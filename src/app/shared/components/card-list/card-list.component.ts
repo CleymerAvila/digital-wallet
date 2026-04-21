@@ -10,6 +10,7 @@ import {
   OnDestroy,
   ChangeDetectorRef,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { animate, stagger } from 'animejs';
 import { CreditCard } from 'src/app/core/models/card-model';
 import { CardService } from 'src/app/core/services/card-service';
@@ -46,7 +47,8 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
   constructor(
     private cdr: ChangeDetectorRef,
     private authService: FireauthService,
-    private cardService: CardService
+    private cardService: CardService,
+    private router: Router
   ) {
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
@@ -269,8 +271,10 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  onEdit(): void {
+  onEdit(cardId: string): void {
     // this.editCard.emit(this.currentCard);
+    console.log('editar este es el metodo', cardId);
+    this.router.navigate(['/add-card', cardId]);
   }
 
   onDelete(cardId: string): void {
