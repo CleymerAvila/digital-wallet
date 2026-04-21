@@ -15,9 +15,15 @@
     </ion-card-header>
     <ion-card-content>
 
-      <app-credit-card
-        [card]="card"
-      />
+      @if((card$ | async); as card){
+        <app-credit-card
+          [card]="card"
+        />
+      } @else {
+        <app-credit-card
+          [card]="cardPlaceHolder"
+        />
+      }
 
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
         <ion-grid>
@@ -27,6 +33,7 @@
               <app-custom-input
                 formControlName="cardHolder"
                 type="text"
+                maxLength="40"
                 placeholder="James Smith"
                 [errorMessages]="{
                   required: 'El nombre del titular es obligatorio'
@@ -40,7 +47,9 @@
               <ion-label position="start">Número Tarjeta</ion-label>
               <app-custom-input
                 formControlName="cardNumber"
-                type="number"
+                appCreditCardFormatter
+                type="string"
+                maxLength="20"
                 placeholder="**** **** **** ****"
                 [errorMessages]="{
                   required: 'El numero de tarjeta es obligatoria'
@@ -54,7 +63,9 @@
               <ion-label position="start">Fecha Exp.</ion-label>
               <app-custom-input
                 formControlName="expiryDate"
-                type="text"
+                appExpiryDateFormatter
+                type="string"
+                maxLength="5"
                 placeholder=""
                 [errorMessages]="{
                   required: 'La fecha de expedición es obligatoria'
@@ -66,7 +77,9 @@
               <ion-label position="start" >CVC</ion-label>
               <app-custom-input
                 formControlName="cvc"
-                type="number"
+                appCvcCardFormatter
+                maxLength="3"
+                type="string"
                 placeholder="124"
                 [errorMessages]="{
                   required: 'El pais es obligatorio'

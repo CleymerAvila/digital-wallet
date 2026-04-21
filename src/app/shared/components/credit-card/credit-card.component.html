@@ -26,10 +26,10 @@
     </div>
 
     <div class="card-actions" *ngIf="showActions">
-      <button class="action-btn" (click)="onEdit()">
+      <button class="action-btn" (click)="onEditCard()">
         <ion-icon name="pencil-outline"></ion-icon>
       </button>
-      <button class="action-btn" (click)="onDelete()">
+      <button class="action-btn" (click)="onDeleteCard()">
         <ion-icon name="trash-outline"></ion-icon>
       </button>
     </div>
@@ -37,7 +37,7 @@
 
   <!-- Número -->
   <div class="card-number card-info-item">
-    {{ masked ? getMaskedNumber(card.cardNumber) : card.cardNumber }}
+    {{ !masked ? (card.cardNumber | creditCard: true)  :  card.cardNumber | creditCard}}
   </div>
 
   <!-- Footer -->

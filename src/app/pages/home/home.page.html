@@ -18,15 +18,15 @@
   </div>
 
   @if((cards$ | async); as cards){
-    <!-- En stack -->
-          <app-card-list
-            [cards]="cards"
-            mode="stack"
-            (editCard)="onEditCardCredit($event)"
-            (deleteCard)="onDeleteCardCredit($event)">
-          </app-card-list>
-        }
- @else {
+    @if(cards.length  > 0 ){
+      <!-- En stack -->
+        <app-card-list
+          [cards]="cards"
+          mode="stack"
+          [cardMasked]="true"
+          >
+        </app-card-list>
+    } @else {
       <div class="card-section">
         <div class="empty-card">
           <ion-icon name="card-outline"></ion-icon>
@@ -36,6 +36,7 @@
           </ion-button>
         </div>
       </div>
+    }
   }
 
   <div class="quick-actions">

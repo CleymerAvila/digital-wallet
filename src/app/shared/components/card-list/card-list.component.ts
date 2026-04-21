@@ -1,10 +1,19 @@
 import {
-  Component, Input, Output, EventEmitter,
-  ViewChildren, QueryList, ElementRef,
-  AfterViewInit, OnDestroy, ChangeDetectorRef
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChildren,
+  QueryList,
+  ElementRef,
+  AfterViewInit,
+  OnDestroy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { animate, stagger } from 'animejs';
 import { CreditCard } from 'src/app/core/models/card-model';
+import { CardService } from 'src/app/core/services/card-service';
+import { FireauthService } from 'src/app/core/services/fireauth-service';
 
 export type CardMode = 'stack' | 'carousel';
 
@@ -15,17 +24,18 @@ export type CardMode = 'stack' | 'carousel';
   standalone: false,
 })
 export class CardListComponent implements AfterViewInit, OnDestroy {
-
   @Input() cards: CreditCard[] = [];
   @Input() mode: CardMode = 'stack';
+  @Input() cardMasked: boolean = false;
 
-  @Output() editCard     = new EventEmitter<CreditCard>();
-  @Output() deleteCard   = new EventEmitter<CreditCard>();
+  // @Output() editCard = new EventEmitter<CreditCard>();
+  // @Output() deleteCard = new EventEmitter<CreditCard>();
   @Output() selectedCard = new EventEmitter<CreditCard>();
-  @Output() setDefault   = new EventEmitter<CreditCard>();
+  @Output() setDefault = new EventEmitter<CreditCard>();
 
   // #cardItem apunta al div wrapper (.card-stack__item o .carousel-slide)
   @ViewChildren('cardItem') cardItems!: QueryList<ElementRef>;
+  currentUserId: string = '';
 
   currentIndex = 0;
 
@@ -33,7 +43,17 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
   private startX = 0;
   private startY = 0;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private authService: FireauthService,
+    private cardService: CardService
+  ) {
+    this.authService.currentUser$.subscribe((user) => {
+      if (user) {
+        this.currentUserId = user.uid;
+      }
+    });
+  }
 
   get currentCard(): CreditCard {
     return this.cards[this.currentIndex];
@@ -67,14 +87,16 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
 
   private animateStackEntrance(): void {
     this.cdr.detectChanges();
-    const els = this.cardItems.toArray().map(el => el.nativeElement);
+    const els = this.cardItems.toArray().map((el) => el.nativeElement);
 
     // Estado inicial: todas apiladas debajo
     els.forEach((el: HTMLElement, i: number) => {
       const offset = i - this.currentIndex;
-      el.style.opacity   = '0';
-      el.style.zIndex    = `${els.length - i}`;
-      el.style.transform = `translateY(${120 + offset * 12}px) scale(${1 - Math.abs(offset) * 0.05})`;
+      el.style.opacity = '0';
+      el.style.zIndex = `${els.length - i}`;
+      el.style.transform = `translateY(${120 + offset * 12}px) scale(${
+        1 - Math.abs(offset) * 0.05
+      })`;
     });
 
     // 1) Subida rápida con overshoot
@@ -89,7 +111,7 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
       },
       scale: (_: any, i: number) => {
         const abs = Math.abs(i - this.currentIndex);
-        return (1 - abs * 0.05) + 0.015;
+        return 1 - abs * 0.05 + 0.015;
       },
       duration: 520,
       delay: stagger(70),
@@ -128,19 +150,19 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
   }
 
   private updateStackPositions(): void {
-    const els = this.cardItems.toArray().map(el => el.nativeElement);
+    const els = this.cardItems.toArray().map((el) => el.nativeElement);
 
     els.forEach((el: HTMLElement, i: number) => {
-      const offset    = i - this.currentIndex;
+      const offset = i - this.currentIndex;
       const absOffset = Math.abs(offset);
       el.style.zIndex = `${els.length - absOffset}`;
 
       animate(el, {
         translateY: `${offset * 20}px`,
-        scale:    1 - absOffset * 0.05,
-        opacity:  absOffset === 0 ? 1 : absOffset === 1 ? 0.6 : 0.3,
+        scale: 1 - absOffset * 0.05,
+        opacity: absOffset === 0 ? 1 : absOffset === 1 ? 0.6 : 0.3,
         duration: 450,
-        ease:     'outExpo',
+        ease: 'outExpo',
       });
     });
 
@@ -148,15 +170,17 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
   }
 
   private animateInfoItems(): void {
-    const infoItems = document.querySelectorAll('app-card-list .card-info-item');
+    const infoItems = document.querySelectorAll(
+      'app-card-list .card-info-item'
+    );
     if (!infoItems.length) return;
 
     animate(infoItems, {
       translateX: [-14, 0],
-      opacity:    [0, 1],
-      duration:   450,
-      delay:      stagger(55),
-      ease:       'outCubic',
+      opacity: [0, 1],
+      duration: 450,
+      delay: stagger(55),
+      ease: 'outCubic',
     });
   }
 
@@ -165,18 +189,19 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
   // ══════════════════════════════════════════════════════
 
   private animateCarouselEntrance(): void {
-    const slides = this.cardItems.toArray().map(el => el.nativeElement);
+    const slides = this.cardItems.toArray().map((el) => el.nativeElement);
 
     slides.forEach((el: HTMLElement, i: number) => {
-      el.style.opacity   = '0';
-      el.style.transform = i === this.currentIndex ? 'translateX(0%)' : 'translateX(100%)';
+      el.style.opacity = '0';
+      el.style.transform =
+        i === this.currentIndex ? 'translateX(0%)' : 'translateX(100%)';
     });
 
     animate(slides[this.currentIndex], {
       translateX: ['100%', '0%'],
-      opacity:    [0, 1],
-      duration:   600,
-      ease:       'outExpo',
+      opacity: [0, 1],
+      duration: 600,
+      ease: 'outExpo',
     });
   }
 
@@ -184,26 +209,26 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
     if (nextIndex === this.currentIndex) return;
     if (nextIndex < 0 || nextIndex >= this.cards.length) return;
 
-    const slides    = this.cardItems.toArray().map(el => el.nativeElement);
+    const slides = this.cardItems.toArray().map((el) => el.nativeElement);
     const direction = nextIndex > this.currentIndex ? 1 : -1;
-    const current   = slides[this.currentIndex];
-    const next      = slides[nextIndex];
+    const current = slides[this.currentIndex];
+    const next = slides[nextIndex];
 
-    next.style.opacity   = '1';
+    next.style.opacity = '1';
     next.style.transform = `translateX(${direction * 100}%)`;
 
     animate(current, {
       translateX: `${-direction * 100}%`,
-      opacity:    [1, 0],
-      duration:   350,
-      ease:       'inCubic',
+      opacity: [1, 0],
+      duration: 350,
+      ease: 'inCubic',
     });
 
     animate(next, {
       translateX: [`${direction * 100}%`, '0%'],
-      opacity:    [1, 1],
-      duration:   350,
-      ease:       'outCubic',
+      opacity: [1, 1],
+      duration: 350,
+      ease: 'outCubic',
     });
 
     this.currentIndex = nextIndex;
@@ -248,9 +273,20 @@ export class CardListComponent implements AfterViewInit, OnDestroy {
   // Acciones
   // ══════════════════════════════════════════════════════
 
-  onEdit(): void      { this.editCard.emit(this.currentCard); }
-  onDelete(): void    { this.deleteCard.emit(this.currentCard); }
-  onSetDefault(): void { this.setDefault.emit(this.currentCard); }
+  onEdit(): void {
+    // this.editCard.emit(this.currentCard);
+  }
+
+  onDelete(cardId: string): void {
+    console.log('eliminar este es el metodo', cardId);
+    if (confirm('¿Estás seguro que deseas eliminar esta tarjeta?')) {
+      this.cardService.deleteCard(this.currentUserId, cardId);
+      // this.deleteCard.emit(this.currentCard);
+    }
+  }
+  onSetDefault(): void {
+    this.setDefault.emit(this.currentCard);
+  }
 
   ngOnDestroy(): void {}
 }

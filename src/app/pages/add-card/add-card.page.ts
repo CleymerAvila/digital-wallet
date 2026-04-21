@@ -6,6 +6,7 @@ import { ToastService } from 'src/app/core/services/toast-service';
 import { UserService } from 'src/app/core/services/user-service';
 import { CreditCard } from 'src/app/core/models/card-model';
 import { CardService } from 'src/app/core/services/card-service';
+import { Observable } from 'rxjs';
 @Component({
   selector: 'app-add-card',
   templateUrl: './add-card.page.html',
@@ -13,15 +14,17 @@ import { CardService } from 'src/app/core/services/card-service';
   standalone: false
 })
 export class AddCardPage implements OnInit {
-name!: FormControl;
+  name!: FormControl;
   cardHolder!: FormControl;
   cardNumber!: FormControl;
   expiryDate!: FormControl;
   type!: FormControl;
   cvc!: FormControl;
   registerForm!: FormGroup;
+  detectedCardType: string = 'default';
+  card$!: Observable<CreditCard>;
 
-  card: CreditCard = {
+  cardPlaceHolder: CreditCard = {
     id: '1',
     userId: '',
     cardHolder: 'YOUR NAME',
@@ -49,14 +52,48 @@ name!: FormControl;
   ngOnInit() {
     this.initForm();
     this.subscribeChanges();
+    this.setupCardTypeDetection();
+
+    // this.logFormErrors();
+  }
+
+  logFormErrors() {
+    // Ver estado general del formulario
+    //console.log('Formulario válido:', this.registerForm?.valid);
+    // console.log('Formulario errors:', this.registerForm?.errors);
+
+    // Ver cada control individualmente
+    if (this.registerForm) {
+      Object.keys(this.registerForm.controls).forEach(key => {
+        const control = this.registerForm.get(key);
+        console.log(`${key}:`, {
+          value: control?.value,
+          valid: control?.valid,
+          errors: control?.errors,
+          touched: control?.touched,
+          dirty: control?.dirty
+        });
+      });
+    }
   }
 
   initForm() {
-    this.cardHolder = new FormControl(this.card.cardHolder, Validators.required);
-    this.cardNumber = new FormControl(this.card.cardNumber, Validators.required);
-    this.expiryDate = new FormControl(this.card.expiryDate, Validators.required);
-    this.type = new FormControl(this.card.type, Validators.required);
-    this.cvc = new FormControl(this.card.cvc, Validators.required);
+    this.cardHolder = new FormControl('', Validators.required);
+    this.cardNumber = new FormControl(
+      '', {
+        validators: [
+        Validators.required,
+        Validators.minLength(14),
+        this.cardService.creditCardValidator()
+      ],
+      // updateOn: 'blur'
+    });
+    this.expiryDate = new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^(0[1-9]|1[0-2])\/\d{2}$/)
+    ]);
+    this.type = new FormControl('default', Validators.required);
+    this.cvc = new FormControl('', Validators.required);
 
 
     this.registerForm = new FormGroup({
@@ -71,15 +108,40 @@ name!: FormControl;
   subscribeChanges(): void {
     this.registerForm.valueChanges.subscribe(newValues => {
       console.log("Formulario cambio: ", newValues);
-      this.card = {
-        ...this.card,
-        cardHolder: newValues.cardHolderName || this.card.cardHolder,
-        cardNumber: newValues.cardNumber || this.card.cardNumber,
-        expiryDate: newValues.expiryDate || this.card.expiryDate,
-        type: newValues.type || this.card.type,
-        cvc: newValues.cvc || this.card.cvc
+      this.logFormErrors();
+      this.cardPlaceHolder = {
+        ...this.cardPlaceHolder,
+        cardHolder: newValues.cardHolder || this.cardPlaceHolder.cardHolder,
+        cardNumber: newValues.cardNumber || this.cardPlaceHolder.cardNumber,
+        expiryDate: newValues.expiryDate || this.cardPlaceHolder.expiryDate,
+        type: newValues.type || this.cardPlaceHolder.type,
+        cvc: newValues.cvc || this.cardPlaceHolder.cvc
       }
     })
+
+  }
+
+  setupCardTypeDetection() {
+    // Detectar tipo de tarjeta mientras escribe
+    this.cardNumber.valueChanges.subscribe(value => {
+      if (value && value.length >= 4) {
+        this.detectedCardType = this.cardService.getCardType(value);
+
+        // Actualizar el tipo en el formulario
+        this.registerForm.patchValue({
+          type: this.detectedCardType
+        }, { emitEvent: false });
+
+        // Actualizar gradiente de la tarjeta visual
+        this.updateCardGradient();
+      }
+
+    });
+  }
+
+  updateCardGradient() {
+    const gradient = this.cardService.getCardGradient(this.detectedCardType);
+    this.cardPlaceHolder.gradient = gradient;
   }
 
   async onSubmit() {
@@ -90,6 +152,7 @@ name!: FormControl;
           const data = this.registerForm.value;
           this.cardService.create(currentUserId!, data);
           this.toast.show('Tarjeta creada con exito!');
+          this.router.navigate(['/home'])
           console.log('Tarjeta creada con exito!');
         } catch(error: any) {
           this.toast.show('Error al crear tarjeta '+ error.message)
@@ -97,10 +160,6 @@ name!: FormControl;
         }
       })
     }
-  }
-
-  async register(form: any) {
-
   }
 
 }

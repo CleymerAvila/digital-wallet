@@ -23,6 +23,8 @@ import {
 export class CustomInputComponent   implements OnInit,  ControlValueAccessor {
 
   @Input() label: string = '';
+  @Input() maxLength: string = '9999999999';
+  @Input() minLength: string = '';
   @Input() labelPlacement = '';
   @Input() fill = 'outline';
   @Input() type: string = 'text';

@@ -19,11 +19,11 @@ import { CreditCard } from 'src/app/core/models/card-model';
 export class CreditCardComponent implements OnInit, OnDestroy {
   @Input() card!: CreditCard;
   @Input() showActions = false;
-  @Input() masked = true;
+  @Input() masked: boolean = false;
   @Input() rotated = false; // true en modo carousel (portrait)
 
-  @Output() edit = new EventEmitter<void>();
-  @Output() delete = new EventEmitter<void>();
+  @Output() onEdit = new EventEmitter<string>();
+  @Output() onDelete = new EventEmitter<string>();
 
   // Estado del efecto tilt/glare
   glareOpacity = 0;
@@ -139,11 +139,11 @@ export class CreditCardComponent implements OnInit, OnDestroy {
 
   // ── Acciones ──────────────────────────────────────────
 
-  onEdit(): void {
-    this.edit.emit();
+  onEditCard(): void {
+    this.onEdit.emit(this.card.id);
   }
-  onDelete(): void {
-    this.delete.emit();
+  onDeleteCard(): void {
+    this.onDelete.emit(this.card.id);
   }
 
   getMaskedNumber(number: string): string {

@@ -3,16 +3,103 @@ import { FirestoreService } from './firestore-service';
 import { CreditCard } from '../models/card-model';
 import { map, Observable } from 'rxjs';
 import { orderBy, QueryConstraint, where } from 'firebase/firestore';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CardService {
-    private readonly COL = 'cards';
+  private readonly COL = 'cards';
 
-    constructor(private db: FirestoreService) {}
+  constructor(private db: FirestoreService) {}
 
-    async create(userId: string, data: Partial<CreditCard>): Promise<string> {
+  validateLuhn(cardNumber: string): boolean {
+    // Limpiar el número (eliminar espacios y guiones)
+    const cleanNumber = cardNumber.replace(/\D/g, '');
+
+    if (!/^\d+$/.test(cleanNumber)) return false;
+
+    let sum = 0;
+    let shouldDouble = false;
+
+    // Recorrer de derecha a izquierda
+    for (let i = cleanNumber.length - 1; i >= 0; i--) {
+      let digit = parseInt(cleanNumber.charAt(i));
+
+      if (shouldDouble) {
+        digit *= 2;
+        if (digit > 9) {
+          digit = digit - 9;
+        }
+      }
+
+      sum += digit;
+      shouldDouble = !shouldDouble;
+    }
+
+    return sum % 10 === 0;
+  }
+
+  getCardType(cardNumber: string): 'visa' | 'mastercard' | 'amex' | 'discover' | 'default' {
+    const cleanNumber = cardNumber.replace(/\D/g, '');
+
+    // Patrones de identificación
+    const patterns = {
+      visa: /^4[0-9]{12}(?:[0-9]{3})?$/,
+      mastercard: /^(5[1-5][0-9]{14}|2(22[1-9][0-9]{12}|2[3-9][0-9]{13}|[3-6][0-9]{14}|7[0-1][0-9]{13}|720[0-9]{12}))$/,
+      amex: /^3[47][0-9]{13}$/,
+      discover: /^6(?:011|5[0-9]{2})[0-9]{12}$/
+    };
+
+    if (patterns.visa.test(cleanNumber)) return 'visa';
+    if (patterns.mastercard.test(cleanNumber)) return 'mastercard';
+    if (patterns.amex.test(cleanNumber)) return 'amex';
+    if (patterns.discover.test(cleanNumber)) return 'discover';
+
+    return 'default';
+  }
+
+  creditCardValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (!value) return null;
+
+      // Verificar si es válido según Luhn
+      const isValidLuhn = this.validateLuhn(value);
+
+      if (!isValidLuhn) {
+        return { creditCard: 'Número de tarjeta inválido' };
+      }
+
+      return null;
+    };
+  }
+
+  creditCardWithTypeValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (!value) return null;
+
+      // Validar Luhn
+      const isValidLuhn = this.validateLuhn(value);
+
+      if (!isValidLuhn) {
+        return { creditCard: 'Número de tarjeta inválido' };
+      }
+
+      // Detectar tipo
+      const cardType = this.getCardType(value);
+
+      if (cardType === 'default') {
+        return { cardType: 'Tipo de tarjeta no soportado' };
+      }
+
+      // Si es válido, puedes guardar el tipo como metadata
+      return null;
+    };
+  }
+
+  async create(userId: string, data: Partial<CreditCard>): Promise<string> {
 
       const cardId = this.generateCardId();
       const now = new Date();
@@ -25,7 +112,7 @@ export class CardService {
         balance: data.balance || 0,
         cvc: data.cvc || 0,
         type: data.type || 'default',
-        gradient: data.gradient || ['#667eea', '#764ba2'],
+        gradient: this.getCardGradient(data.type ?? 'default'),
         isDefault: data.isDefault || false,
         createdAt: now,
         updatedAt: now,
@@ -160,4 +247,19 @@ export class CardService {
         const cards = await this.db.getAll<CreditCard>(this.COL, ...constraints);
         return cards.length > 0 ? cards[0] : null;
     }
+
+    getCardGradient(cardType: string): string[] {
+    switch(cardType) {
+      case 'visa':
+        return ['#1a1f71', '#1a1f71']; // Azul Visa
+      case 'mastercard':
+        return ['#eb001b', '#f79e1b']; // Rojo/Naranja Mastercard
+      case 'amex':
+        return ['#2e77bc', '#2e77bc']; // Azul American Express
+      case 'discover':
+        return ['#ff6000', '#ff6000']; // Naranja Discover
+      default:
+        return ['#667eea', '#764ba2']; // Gradiente por defecto
+    }
+  }
 }

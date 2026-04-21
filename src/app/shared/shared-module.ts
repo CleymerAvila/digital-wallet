@@ -7,11 +7,18 @@ import { CustomInputComponent } from './components/custom-input/custom-input.com
 import { QuickActionsComponent } from './components/quick-actions/quick-actions.component';
 import { CardListComponent } from './components/card-list/card-list.component';
 import { CreditCardComponent } from './components/credit-card/credit-card.component';
+import { CreditCardPipe } from './pipes/credit-card-pipe';
 
 
 
 @NgModule({
-  declarations: [CustomInputComponent, QuickActionsComponent, CardListComponent, CreditCardComponent],
+  declarations: [
+    CustomInputComponent,
+    QuickActionsComponent,
+    CardListComponent,
+    CreditCardComponent,
+    CreditCardPipe,
+  ],
   imports: [
     CommonModule,
     IonicModule,
@@ -27,7 +34,8 @@ import { CreditCardComponent } from './components/credit-card/credit-card.compon
     CustomInputComponent,
     QuickActionsComponent,
     CardListComponent,
-    CreditCardComponent
+    CreditCardComponent,
+    CreditCardPipe
   ]
 })
 export class SharedModule { }

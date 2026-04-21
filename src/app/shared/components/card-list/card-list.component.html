@@ -1,85 +1,67 @@
-<div
-  class="cards-wrapper"
-  (touchstart)="onTouchStart($event)"
-  (touchend)="onTouchEnd($event)">
+<div class="cards-wrapper" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
 
   @defer (on idle) {
 
-    @if (cards.length > 0) {
+  @if (cards.length > 0) {
 
-      <!-- ══════════════ STACK ══════════════ -->
-      <ng-container *ngIf="mode === 'stack'">
+  <!-- ══════════════ STACK ══════════════ -->
+  <ng-container *ngIf="mode === 'stack'">
 
-        <div class="card-stack">
-          <div
-            *ngFor="let card of cards; let i = index"
-            #cardItem
-            class="card-stack__item">
+    <div class="card-stack">
+      <div *ngFor="let card of cards; let i = index" #cardItem class="card-stack__item">
 
-            <app-credit-card
-              [card]="card"
-              [showActions]="i === currentIndex"
-              [masked]="true"
-              (edit)="onEdit()"
-              (delete)="onDelete()">
-            </app-credit-card>
+        <app-credit-card [card]="card" [showActions]="i === currentIndex" [masked]="cardMasked" (onEdit)="onEdit()"
+          (onDelete)="onDelete($event)">
+        </app-credit-card>
 
-          </div>
-        </div>
+      </div>
+    </div>
 
-        <!-- Dots -->
-        <div class="stack-dots">
-          <span
-            *ngFor="let card of cards; let i = index"
-            class="dot"
-            [class.dot-active]="i === currentIndex"
-            (click)="selectCard(i)">
-          </span>
-        </div>
+    <!-- Dots -->
+    <div class="stack-dots">
+      <span *ngFor="let card of cards; let i = index" class="dot" [class.dot-active]="i === currentIndex"
+        (click)="selectCard(i)">
+      </span>
+    </div>
 
-      </ng-container>
+  </ng-container>
 
-      <!-- ══════════════ CAROUSEL ══════════════ -->
-      <ng-container *ngIf="mode === 'carousel'">
+  <!-- ══════════════ CAROUSEL ══════════════ -->
+  <ng-container *ngIf="mode === 'carousel'">
 
-        <div class="carousel-wrapper">
+    <div class="carousel-wrapper">
 
-          <div class="carousel-track">
-            <div
-              *ngFor="let card of cards; let i = index"
-              #cardItem
-              class="carousel-slide">
+      <div class="carousel-track">
+        <div *ngFor="let card of cards; let i = index" #cardItem class="carousel-slide">
 
-              <app-credit-card
-                [card]="card"
-                [masked]="true"
-                [rotated]="true">
-              </app-credit-card>
-
-            </div>
-          </div>
-
-          <!-- Info debajo -->
-          <div class="carousel-info">
-            <h2 class="carousel-name">{{ currentCard.cardHolder }}</h2>
-            <p class="carousel-sub">
-              {{ currentCard.type | titlecase }} • •••• {{ currentCard.cardNumber.slice(-4) }}
-            </p>
-          </div>
-
-          <!-- Botón -->
-          <div class="carousel-action">
-            <button class="default-btn" (click)="onSetDefault()">
-              <ion-icon name="shield-checkmark" color="success"></ion-icon>
-              Set as Default
-            </button>
-          </div>
+          <app-credit-card [card]="card" [masked]="cardMasked" [rotated]="true" (onEdit)="onEdit()"
+            (onDelete)="onDelete($event)">
+          </app-credit-card>
 
         </div>
+      </div>
 
-      </ng-container>
+      <!-- Info debajo -->
+      <div class="carousel-info">
+        <h2 class="carousel-name">{{ currentCard.cardHolder }}</h2>
+        <p class="carousel-sub">
+          {{ currentCard.type | titlecase }} • •••• {{ currentCard.cardNumber.slice(-4) }}
+        </p>
+      </div>
 
-    }
+      <!-- Botón -->
+      <div class="carousel-action">
+        <button class="default-btn" (click)="onSetDefault()">
+          <ion-icon name="shield-checkmark" color="success"></ion-icon>
+          Set as Default
+        </button>
+      </div>
+
+    </div>
+
+  </ng-container>
+
+  }
 
   }
 
