@@ -42,6 +42,7 @@
   <div class="quick-actions">
     <app-quick-actions
       (click)="openChangeCardModal()"
+      [disable]="cardsLength===0"
       label="Cambiar Tarjeta"
       iconName="layers-outline"
       color="teal"

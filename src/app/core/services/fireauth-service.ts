@@ -17,6 +17,7 @@ import { from, map, Observable, of, switchMap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { UserService } from './user-service';
 import { UserProfile } from '../models/user-model';
+import { BiometricService } from './biometric-service';
 @Injectable({
   providedIn: 'root',
 })
@@ -35,7 +36,8 @@ export class FireauthService {
   constructor(
     private auth: Auth,
     private platform: Platform,
-    private userService: UserService
+    private userService: UserService,
+    private biometricService: BiometricService
   ) {
     this.initGoogleAuth();
   }
@@ -77,6 +79,17 @@ export class FireauthService {
 
   loginWithEmail(email: string, password: string): Observable<UserCredential> {
     return from(signInWithEmailAndPassword(this.auth, email, password));
+  }
+
+  async loginWithBiometric(): Promise<UserCredential | null> {
+    const credentials = await this.biometricService.loginWithBiometric();
+    if(!credentials) return null;
+
+    return signInWithEmailAndPassword(
+      this.auth,
+      credentials.username,
+      credentials.password
+    )
   }
 
   registerWithEmail(

@@ -10,6 +10,7 @@ export class QuickActionsComponent  implements OnInit {
   @Input({required: true}) label!: string;
   @Input({required: true}) iconName!: string;
   @Input({required: true}) color!: string;
+  @Input() disable: boolean = false;
 
   constructor() { }
 

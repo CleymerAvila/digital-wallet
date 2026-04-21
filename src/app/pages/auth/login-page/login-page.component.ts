@@ -65,4 +65,15 @@ export class LoginPageComponent implements OnInit {
       throw error;
     }
   }
+
+  async signInWithBiometric(): Promise<void> {
+    try {
+      await this.authService.loginWithBiometric();
+      this.toast.show('Inicio con biometria exitoso');
+      this.router.navigate(['/home']);
+    } catch (error) {
+      this.toast.show(`Eror al iniciar con biometrica ${error}`)
+      throw error;
+    }
+  }
 }

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FireauthService } from './services/fireauth-service';
+import { AlertController } from '@ionic/angular';
 
 
 
@@ -11,7 +12,8 @@ import { FireauthService } from './services/fireauth-service';
 
   ],
   providers: [
-    FireauthService
+    FireauthService,
+    AlertController
   ]
 })
 export class CoreModule { }

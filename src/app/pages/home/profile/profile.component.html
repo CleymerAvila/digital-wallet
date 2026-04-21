@@ -54,6 +54,8 @@
         />
       }
       <ion-toggle
+        [value]="this.isBiometricLockActive"
+        (ionChange)="toggleChanged($event)"
       >
         <ion-icon name="finger-print-outline"></ion-icon>
         Biometric

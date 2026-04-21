@@ -13,7 +13,7 @@ import { ChangeCardComponent } from './change-card/change-card.component';
 import { CreditCardComponent } from 'src/app/shared/components/credit-card/credit-card.component';
 import { CardListComponent } from 'src/app/shared/components/card-list/card-list.component';
 import { CardService } from 'src/app/core/services/card-service';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +24,7 @@ import { Observable } from 'rxjs';
 export class HomePage implements OnInit {
   currentUser$ = this.authService.currentUser$;
   cards$!: Observable<CreditCard[]>;
+  cardsLength: number = 0;
   @ViewChild('cardComponent') cardComponent!: CardListComponent;
 
   currentUserId: string = '';
@@ -38,8 +39,15 @@ export class HomePage implements OnInit {
   ) {
     this.authService.currentUser$.subscribe((user) => {
       if (user) {
+        console.log(user)
         this.currentUserId = user.uid;
         this.cards$ = this.cardService.listenUserCards$(this.currentUserId);
+        this.cards$.subscribe((cards) => {
+          if(cards){
+            console.log('Cantidad de tarjetas: ', cards.length)
+            this.cardsLength = cards.length;
+          }
+        })
       }
     });
   }
@@ -61,6 +69,7 @@ export class HomePage implements OnInit {
   }
 
   async openChangeCardModal() {
+    if(this.cardsLength === 0) return;
     const enterAnimation = (baseEl: HTMLElement): Animation => {
       const root = baseEl.shadowRoot!;
       const backdropAnim = this.animationCtrl
